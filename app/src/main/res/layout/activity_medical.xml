@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    tools:context="com.example.chengen.one.Medical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Medical"
+        android:id="@+id/textView16"
+        android:textSize="45sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFF"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Description:"
+        android:id="@+id/textView3"
+        android:textColor="#FFFF"
+        android:textSize="22sp"
+        android:layout_below="@+id/tbMy"
+        android:layout_alignStart="@+id/etMedDes" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/etMedDes"
+        android:gravity="start|top"
+        android:background="@drawable/newpanel"
+        android:textSize="20sp"
+        android:layout_below="@+id/textView3"
+        android:textColor="#FFFF"
+        android:layout_alignEnd="@+id/ibMedMap"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignStart="@+id/btnMed" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/etMedURL"
+        android:textSize="20sp"
+        android:textColor="#FFFF"
+        android:singleLine="true"
+        android:layout_below="@+id/etMedDes"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/newpanel"
+        android:layout_alignStart="@+id/btnMed"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="15dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:text="SubMit"
+        android:id="@+id/btnMed"
+        android:background="@drawable/newpanel"
+        android:textColor="#FFFF"
+        android:textSize="30sp"
+        android:layout_below="@+id/ibMedMap"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/ivMedPic1"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/photoboarder"
+        android:layout_below="@+id/etMedDes"
+        android:layout_marginLeft="15dp" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/ivMedPic2"
+        android:background="@drawable/photoboarder"
+        android:layout_alignTop="@+id/ivMedPic1"
+        android:layout_toEndOf="@+id/ivMedPic1"
+        android:layout_marginLeft="15dp" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/ivMedPic3"
+        android:background="@drawable/photoboarder"
+        android:layout_alignTop="@+id/ivMedPic2"
+        android:layout_toEndOf="@+id/ivMedPic2"
+        android:layout_marginLeft="15dp" />
+
+    <ToggleButton
+        android:layout_width="90dp"
+        android:layout_height="35dp"
+        android:text="New ToggleButton"
+        android:id="@+id/tbMy"
+        android:checked="false"
+        android:textOff="Myself"
+        android:textOn="Myself"
+        android:textSize="18dp"
+        android:textColor="#FFFF"
+        android:background="@drawable/newpanel"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/textView16"
+        android:layout_alignParentStart="true" />
+
+    <ToggleButton
+        android:layout_width="90dp"
+        android:layout_height="35dp"
+        android:text="Ohters"
+        android:id="@+id/tbOther"
+        android:checked="false"
+        android:textOn="Others"
+        android:textOff="Others"
+        android:textSize="18dp"
+        android:textColor="#FFFF"
+        android:background="@drawable/newpanel"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/textView16"
+        android:layout_alignParentEnd="true" />
+
+            <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/etMedLocDes"
+        android:layout_below="@+id/ivMedPic1"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:layout_toStartOf="@+id/ibMedMap"
+        android:layout_marginRight="10dp"
+        android:textColor="#FFFF"
+        android:singleLine="true"
+        android:textSize="20sp"
+                android:background="@drawable/newpanel"
+                android:layout_marginLeft="15dp" />
+
+    <ImageButton
+        android:layout_width="65dp"
+        android:layout_height="45dp"
+        android:id="@+id/ibMedMap"
+        android:background="@drawable/map"
+        android:layout_alignTop="@+id/etMedLocDes"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/ibMedDelOne"
+        android:layout_alignTop="@+id/ivMedPic1"
+        android:layout_alignEnd="@+id/ivMedPic1"
+        android:background="@drawable/del" />
+
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/ibMedDelTwo"
+        android:layout_alignTop="@+id/ivMedPic2"
+        android:layout_alignEnd="@+id/ivMedPic2"
+        android:background="@drawable/del" />
+
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/ibMedDelThree"
+        android:background="@drawable/del"
+        android:layout_alignTop="@+id/ivMedPic3"
+        android:layout_alignEnd="@+id/ivMedPic3" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    tools:context="com.example.chengen.one.Suspicion">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Suspicion"
+        android:id="@+id/textView17"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="45sp"
+        android:layout_marginLeft="80dp"
+        android:textColor="#FFFF"
+        android:layout_gravity="center_horizontal" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/etSuspLocDes"
+        android:textSize="20sp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/ivSuspPic1"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/ibSuspMap"
+        android:layout_marginTop="20dp"
+        android:singleLine="true"
+        android:textColor="#FFFF"
+        android:background="@drawable/newpanel"
+        android:layout_marginLeft="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Situation:"
+        android:id="@+id/textView14"
+        android:textSize="28sp"
+        android:textColor="#FFFF"
+        android:layout_below="@+id/textView17"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="15dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/etSusp"
+        android:gravity="start|top"
+        android:textSize="20sp"
+        android:layout_below="@+id/textView14"
+        android:layout_alignParentStart="true"
+        android:autoText="false"
+        android:background="@drawable/newpanel"
+        android:textColor="#FFFF"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/etSuspURL"
+        android:textSize="20sp"
+        android:singleLine="true"
+        android:textColor="#FFFF"
+        android:layout_below="@+id/etSusp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/newpanel"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignEnd="@+id/btnSusp" />
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/ivSuspPic1"
+        android:background="@drawable/photoboarder"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="80dp"
+        android:layout_below="@+id/etSusp"
+        android:layout_marginLeft="15dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:text="Submit"
+        android:id="@+id/btnSusp"
+        android:textSize="45dp"
+        android:textColor="#FFFF"
+        android:background="@drawable/newpanel"
+        android:layout_below="@+id/ibSuspMap"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <ImageButton
+        android:layout_width="65dp"
+        android:layout_height="45dp"
+        android:id="@+id/ibSuspMap"
+        android:layout_alignTop="@+id/etSuspLocDes"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/map"
+        android:layout_marginRight="15dp" />
+
+            <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/ivSuspPic2"
+        android:background="@drawable/photoboarder"
+        android:layout_above="@+id/etSuspLocDes"
+        android:layout_toEndOf="@+id/ivSuspPic1"
+        android:layout_marginLeft="15dp" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/ivSuspPic3"
+        android:background="@drawable/photoboarder"
+        android:layout_above="@+id/etSuspLocDes"
+        android:layout_toEndOf="@+id/ivSuspPic2"
+        android:layout_marginLeft="15dp" />
+
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/ibSuspDelOne"
+        android:layout_alignTop="@+id/ivSuspPic1"
+        android:layout_alignEnd="@+id/ivSuspPic1"
+        android:background="@drawable/del" />
+
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/ibSuspDelTwo"
+        android:layout_alignTop="@+id/ivSuspPic2"
+        android:layout_alignEnd="@+id/ivSuspPic2"
+        android:background="@drawable/del" />
+
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/ibSuspDelThree"
+        android:background="@drawable/del"
+        android:layout_alignTop="@+id/ivSuspPic3"
+        android:layout_alignEnd="@+id/ivSuspPic3" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

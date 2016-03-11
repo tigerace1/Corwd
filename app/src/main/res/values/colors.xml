@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#292727</color>
+    <color name="colorPrimaryDark">#292727</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="textColorPrimary">#FFF</color>
+    <color name="checkboxOn">#FFE83333</color>
+    <color name="checkboxOff">#FFFF</color>
+</resources>

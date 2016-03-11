@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    tools:context="com.example.chengen.one.Missing"
+    android:clickable="true">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollView3"
+    android:scrollbars="none">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Missing"
+            android:id="@+id/textView24"
+            android:textSize="41sp"
+            android:textColor="#FFFF"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="100dp">
+
+           <EditText
+               android:layout_width="wrap_content"
+               android:layout_height="35dp"
+               android:id="@+id/etObject"
+               android:layout_alignParentBottom="true"
+               android:layout_alignParentEnd="true"
+               android:layout_toEndOf="@+id/textView12"
+               android:textSize="20sp"
+               android:singleLine="true"
+               android:layout_alignTop="@+id/textView12"
+               android:layout_marginLeft="10dp"
+               android:textColor="#FFFF"
+               android:background="@drawable/newpanel"
+               android:layout_marginRight="15dp" />
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textAppearance="?android:attr/textAppearanceMedium"
+               android:text="Object Name:"
+               android:id="@+id/textView12"
+               android:layout_alignParentBottom="true"
+               android:layout_alignParentStart="true"
+               android:textColor="#FFFF"
+               android:textSize="26sp"
+               android:layout_marginBottom="8dp"
+               android:layout_marginLeft="15dp" />
+
+           <ToggleButton
+               android:layout_width="90dp"
+               android:layout_height="35dp"
+               android:text="Lost"
+               android:id="@+id/tbLost"
+               android:checked="false"
+               android:textOn="Lost"
+               android:textSize="20sp"
+               android:textOff="Lost"
+               android:textColor="#FFFF"
+               android:layout_alignParentTop="true"
+               android:layout_alignParentStart="true"
+               android:layout_marginLeft="15dp"
+               android:background="@drawable/newpanel" />
+
+           <ToggleButton
+               android:layout_width="90dp"
+               android:layout_height="35dp"
+               android:text="found"
+               android:id="@+id/tbFound"
+               android:textColor="#FFFF"
+               android:textOff="Found"
+               android:textOn="Found"
+               android:textSize="20sp"
+               android:layout_alignParentTop="true"
+               android:layout_alignParentEnd="true"
+               android:layout_marginRight="15dp"
+               android:checked="false"
+               android:background="@drawable/newpanel" />
+
+       </RelativeLayout>
+
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More Details:"
+        android:id="@+id/textView4"
+        android:textSize="28sp"
+        android:textColor="#FFFF"
+        android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/etMiss"
+            android:gravity="start|top"
+            android:textSize="20sp"
+            android:textColor="#FFFF"
+            android:background="@drawable/newpanel"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:layout_above="@+id/ivMiss"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Contact:"
+                android:id="@+id/textView21"
+                android:textColor="#FFFF"
+                android:textSize="26sp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:id="@+id/etNumber"
+                android:textSize="20sp"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@+id/textView21"
+                android:singleLine="true"
+                android:inputType="phone"
+                android:layout_alignParentBottom="true"
+                android:layout_alignTop="@+id/textView21"
+                android:layout_marginLeft="10dp"
+                android:textColor="#FFFF"
+                android:background="@drawable/newpanel"
+                android:layout_marginRight="15dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:id="@+id/etRespond"
+                android:textSize="20sp"
+                android:singleLine="true"
+                android:layout_marginLeft="10dp"
+                android:textColor="#FFFF"
+                android:layout_alignBottom="@+id/textView8"
+                android:layout_alignEnd="@+id/etNumber"
+                android:layout_toEndOf="@+id/textView8"
+                android:background="@drawable/newpanel" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Respond To:"
+                android:id="@+id/textView8"
+                android:textSize="26sp"
+                android:textColor="#FFFF"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="15dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="235dp"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/etMissURL"
+                android:textSize="20sp"
+                android:layout_marginLeft="15dp"
+                android:layout_alignParentEnd="true"
+                android:singleLine="true"
+                android:textColor="#FFFF"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/newpanel"
+                android:layout_marginRight="15dp" />
+
+            <ImageButton
+                android:layout_width="65dp"
+                android:layout_height="45dp"
+                android:id="@+id/ibMissMap"
+                android:background="@drawable/map"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="15dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:id="@+id/etMissLocDes"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/ibMissMap"
+                android:layout_marginRight="15dp"
+                android:singleLine="true"
+                android:textSize="20sp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignTop="@+id/ibMissMap"
+                android:textColor="#FFFF"
+                android:background="@drawable/newpanel"
+                android:layout_marginLeft="15dp" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/ivMissPic1"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/photoboarder"
+                android:layout_marginLeft="15dp" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/ivMissPic2"
+                android:background="@drawable/photoboarder"
+                android:layout_marginLeft="10dp"
+                android:layout_alignTop="@+id/ivMissPic1"
+                android:layout_toEndOf="@+id/ivMissPic1" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/ivMissPic3"
+                android:background="@drawable/photoboarder"
+                android:layout_alignTop="@+id/ivMissPic2"
+                android:layout_toEndOf="@+id/ivMissPic2"
+                android:layout_marginLeft="10dp" />
+
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/ibMissDelOne"
+                android:background="@drawable/del"
+                android:layout_alignTop="@+id/ivMissPic1"
+                android:layout_toStartOf="@+id/ivMissPic2" />
+
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/ibMissDelTwo"
+                android:layout_alignTop="@+id/ivMissPic2"
+                android:layout_toStartOf="@+id/ivMissPic3"
+                android:background="@drawable/del" />
+
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/ibMissDelThree"
+                android:background="@drawable/del"
+                android:layout_alignTop="@+id/ivMissPic3"
+                android:layout_alignEnd="@+id/ivMissPic3" />
+
+        </RelativeLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:text="Send"
+            android:id="@+id/btnMiss"
+            android:textAlignment="center"
+            android:textColor="#FFFF"
+            android:clickable="true"
+            android:textSize="30sp"
+            android:layout_above="@+id/btnMissMap"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/newpanel"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+    </LinearLayout>
+</ScrollView>
+
+</RelativeLayout>
