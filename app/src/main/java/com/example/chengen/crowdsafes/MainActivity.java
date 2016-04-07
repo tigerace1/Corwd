@@ -1,7 +1,9 @@
 package com.example.chengen.crowdsafes;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,21 +16,27 @@ public class MainActivity extends Activity {
         ImageView imageView = (ImageView)findViewById(R.id.iBLoading);
         final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_loading);
         imageView.startAnimation(animAlpha);
-        Thread welcomeThread = new Thread() {
+        animAlpha.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void run() {
-                try {
-                    super.run();
-                    sleep(7000);
-                } catch (Exception e) {
-
-                } finally {
-                    Intent i = new Intent(MainActivity.this, NavigationMenu.class);
-                    startActivity(i);
+            public void onAnimationStart(Animation animation) {
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                if (sharedPref.contains("firstName")) {
+                    startActivity(new Intent(MainActivity.this, NavigationMenu.class));
+                    System.out.println("OOO");
+                    finish();
+                } else {
+                    startActivity(new Intent(MainActivity.this, LoginPage.class));
                     finish();
                 }
             }
-        };
-        welcomeThread.start();
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }

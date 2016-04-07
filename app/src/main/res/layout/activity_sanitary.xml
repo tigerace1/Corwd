@@ -5,154 +5,125 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
-    tools:context="com.example.chengen.one.Sanitary">
+    tools:context="com.example.chengen.one.Sanitary"
+    android:background="#303030">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-   <TextView
+            android:layout_height="match_parent">
+    <TextView
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:textAppearance="?android:attr/textAppearanceLarge"
        android:text="Sanitary"
        android:id="@+id/textView11"
-       android:textSize="45sp"
-       android:textColor="#FFFF"
+       android:textSize="22sp"
+       android:textColor="#7d6a58"
        android:layout_alignParentTop="true"
        android:layout_centerHorizontal="true"
-       android:layout_gravity="center_horizontal" />
+       android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp" />
 
     <EditText
         android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:id="@+id/etSanLocDes"
-        android:textSize="20sp"
-        android:layout_marginRight="10dp"
-        android:textColor="#FFFF"
-        android:layout_below="@+id/ivSanPic1"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/ibSanMap"
-        android:layout_marginTop="25dp"
+        android:textSize="18sp"
+        android:textColor="#FFF"
         android:singleLine="true"
-        android:background="@drawable/newpanel"
-        android:layout_marginLeft="15dp" />
+        android:background="@drawable/oneline"
+        android:layout_below="@+id/etSan"
+        android:layout_alignEnd="@+id/ibSanMap"
+        android:layout_alignStart="@+id/etSanURL"
+        android:gravity="center_vertical"
+        android:textAlignment="gravity" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description:"
-        android:id="@+id/textView6"
-        android:textColor="#FFFF"
-        android:textSize="26sp"
-        android:layout_below="@+id/textView11"
-        android:layout_marginLeft="15dp" />
-    <EditText
+            <EditText
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="start|top"
+        android:layout_height="45dp"
+        android:gravity="center_vertical|start"
         android:id="@+id/etSan"
         android:layout_gravity="top"
-        android:textSize="20sp"
-        android:background="@drawable/newpanel"
-        android:layout_below="@+id/textView6"
+        android:textSize="18sp"
+        android:background="@drawable/twolines"
         android:layout_alignParentStart="true"
-        android:textColor="#FFFF"
+        android:textColor="#FFF"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp" />
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/textView11"
+                android:layout_marginTop="10dp"
+                android:textAlignment="gravity" />
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:id="@+id/etSanURL"
-        android:layout_alignParentEnd="true"
-        android:textSize="20sp"
-        android:textColor="#FFFF"
+        android:textSize="18sp"
+        android:textColor="#FFF"
         android:singleLine="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/etSan"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/newpanel"
+        android:background="@drawable/oneline"
         android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp" />
+        android:gravity="center_vertical"
+        android:textAlignment="gravity"
+        android:layout_below="@+id/ibSanMap"
+        android:layout_alignStart="@+id/etSan" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="65dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:text="Requse"
         android:id="@+id/btnSan"
-        android:textSize="30sp"
+        android:textSize="22sp"
         android:textAlignment="center"
         android:textColor="#FFFF"
-        android:background="@drawable/newpanel"
-        android:layout_below="@+id/ibSanMap"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
+        android:background="@drawable/ripple_effect"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/ivSanPic2"
+        android:layout_alignStart="@+id/etSanURL"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/ivSanPic1"
         android:background="@drawable/photoboarder"
-        android:layout_alignTop="@+id/ivSanPic2"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="15dp" />
+        android:layout_below="@+id/etSanURL"
+        android:layout_alignStart="@+id/etSanURL"
+        android:layout_marginTop="15dp" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/ivSanPic2"
         android:background="@drawable/photoboarder"
-        android:layout_alignTop="@+id/ivSanPic3"
-        android:layout_toEndOf="@+id/ivSanPic1"
-        android:layout_marginLeft="15dp" />
+        android:layout_marginLeft="15dp"
+        android:layout_alignTop="@+id/ivSanPic1"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/ivSanPic3"
         android:background="@drawable/photoboarder"
-        android:layout_below="@+id/etSanURL"
-        android:layout_toEndOf="@+id/ivSanPic2"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="15dp" />
+        android:layout_marginLeft="15dp"
+        android:layout_alignTop="@+id/ivSanPic2"
+        android:layout_alignEnd="@+id/ibSanMap" />
 
             <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:id="@+id/ibSanDelOne"
-        android:background="@drawable/del"
-        android:layout_alignTop="@+id/ivSanPic1"
-        android:layout_alignEnd="@+id/ivSanPic1" />
-
-    <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:id="@+id/ibSanDelTwo"
-        android:layout_alignTop="@+id/ivSanPic2"
-        android:layout_alignEnd="@+id/ivSanPic2"
-        android:background="@drawable/del" />
-
-    <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:id="@+id/ibSanDelThree"
-        android:layout_alignTop="@+id/ivSanPic3"
-        android:layout_alignEnd="@+id/ivSanPic3"
-        android:background="@drawable/del" />
-
-    <ImageButton
-        android:layout_width="65dp"
-        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
         android:id="@+id/ibSanMap"
         android:background="@drawable/map"
         android:layout_alignTop="@+id/etSanLocDes"
-        android:layout_alignEnd="@+id/etSanURL" />
+        android:layout_alignEnd="@+id/etSanURL"
+                android:layout_marginTop="8dp" />
+
         </RelativeLayout>
     </ScrollView>
+
 </RelativeLayout>

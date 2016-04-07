@@ -16,8 +16,10 @@ public class Thankyou extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Thankyou.this,HomePage.class);
+                Intent intent = new Intent(Thankyou.this,NavigationMenu.class);
+                intent.putExtra("count",0);
                 startActivity(intent);
+                finish();
             }
         });
     }

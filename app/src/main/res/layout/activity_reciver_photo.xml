@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.chengen.oner.reciverPhoto"
+    android:background="#303030">
+
+    <TextView
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:id="@+id/tvTitle"
+        android:textSize="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFF" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/tvReportDescription"
+        android:gravity="left|top"
+        android:textSize="20dp"
+        android:layout_below="@+id/tvTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:textColor="#FFFF" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/tvLocationDes"
+        android:textSize="20dp"
+        android:layout_below="@+id/tvReportDescription"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:textColor="#FFFF" />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/iBVideo"
+        android:background="#38b9ec"
+        android:foreground="@drawable/playvideo"
+        android:layout_alignBottom="@+id/ibPhotos"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:id="@+id/iBmap"
+        android:background="@drawable/map"
+        android:layout_alignTop="@+id/ibPhotos"
+        android:layout_alignParentStart="false" />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:id="@+id/ibPhotos"
+        android:background="@drawable/gallery_icon"
+        android:layout_marginTop="114dp"
+        android:layout_below="@+id/tvLocationDes"
+        android:layout_alignRight="@+id/tvLocationDes"
+        android:layout_alignEnd="@+id/tvLocationDes" />
+
+</RelativeLayout>

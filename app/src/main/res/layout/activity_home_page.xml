@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.chengen.crowdsafes.HomePage"
+    android:visibility="visible"
+    android:background="#303030">
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:id="@+id/ibAgg"
+        android:layout_marginTop="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:elevation="8dp"
+        android:background="@drawable/btn_aggression_resp"
+        android:layout_marginLeft="5dp"
+        android:visibility="visible" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:id="@+id/ibMiss"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/btn_missing_resp"
+        android:visibility="visible"
+        android:layout_above="@+id/tvAgg"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:id="@+id/ibMed"
+        android:layout_marginLeft="10dp"
+        android:elevation="8dp"
+        android:background="@drawable/btn_medical_resp"
+        android:visibility="visible"
+        android:layout_above="@+id/tvMed"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="5dp" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:id="@+id/ibSan"
+        android:layout_marginRight="20dp"
+        android:elevation="8dp"
+        android:layout_marginTop="54dp"
+        android:background="@drawable/btn_sanitary_resp"
+        android:visibility="visible"
+        android:layout_below="@+id/tvAgg"
+        android:layout_alignStart="@+id/ivTitle" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:id="@+id/ibSusp"
+        android:elevation="8dp"
+        android:background="@drawable/btn_suspicion_resp"
+        android:visibility="visible"
+        android:layout_above="@+id/tvSusp"
+        android:layout_toEndOf="@+id/ivMiss" />
+
+    <ImageView
+        android:layout_width="230dp"
+        android:layout_height="65dp"
+        android:id="@+id/ivTitle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/crowdsafelogo"
+        android:visibility="visible"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Aggression"
+        android:id="@+id/tvAgg"
+        android:textSize="20dp"
+        android:layout_below="@+id/ibAgg"
+        android:layout_alignStart="@+id/ibAgg"
+        android:textColor="#FFFF" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Missing"
+        android:id="@+id/tvMiss"
+        android:textSize="20sp"
+        android:textColor="#FFFF"
+        android:layout_above="@+id/ibSan"
+        android:layout_toStartOf="@+id/ibSusp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Medical"
+        android:id="@+id/tvMed"
+        android:textColor="#FFFF"
+        android:textSize="20sp"
+        android:layout_alignTop="@+id/tvMiss"
+        android:layout_alignEnd="@+id/ibMed"
+        android:layout_marginRight="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Sanitary"
+        android:id="@+id/tvSan"
+        android:layout_below="@+id/ibSan"
+        android:layout_alignEnd="@+id/ibSan"
+        android:layout_marginRight="12dp"
+        android:textColor="#FFFF"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Suspicion"
+        android:id="@+id/tvSusp"
+        android:textColor="#FFFF"
+        android:textSize="20sp"
+        android:layout_marginLeft="7dp"
+        android:layout_alignTop="@+id/tvSan"
+        android:layout_alignStart="@+id/ibSusp" />
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="32dp"
+        android:id="@+id/ivAgg"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_aggression_resp"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="32dp"
+        android:id="@+id/ivSan"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/ivAgg"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_sanitary_resp"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="32dp"
+        android:id="@+id/ivMiss"
+        android:layout_marginLeft="26dp"
+        android:background="@drawable/btn_missing_resp"
+        android:visibility="invisible"
+        android:layout_marginRight="15dp"
+        android:layout_alignTop="@+id/ivSan"
+        android:layout_alignStart="@+id/ibMiss" />
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="32dp"
+        android:id="@+id/ivSusp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/btn_suspicion_resp"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/ivMiss"
+        android:layout_alignStart="@+id/tvSusp" />
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="32dp"
+        android:id="@+id/ivMed"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/ivSusp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_medical_resp"
+        android:visibility="invisible"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="25dp" />
+</RelativeLayout>

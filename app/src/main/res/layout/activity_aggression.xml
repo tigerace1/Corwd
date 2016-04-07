@@ -5,157 +5,133 @@
     android:paddingRight="2dp"
     android:paddingTop="2dp"
     android:paddingBottom="2dp"
-    tools:context="com.example.chengen.one.Aggression">
+    tools:context="com.example.chengen.one.Aggression"
+    android:background="#303030">
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="false"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    android:id="@+id/scrollView">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TextView
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:id="@+id/textView10"
-        android:textColor="#FFFF"
-  android:textSize="26sp"
-  android:text="Situation:"
-  android:layout_weight="0.05"
-        android:layout_below="@+id/textView9"
-        android:layout_marginLeft="15dp" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true">
 
-    <TextView
+        <TextView
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:textAppearance="?android:attr/textAppearanceLarge"
-  android:text="  Aggression"
+  android:text="Aggression"
   android:id="@+id/textView9"
-  android:textColor="#FFFF"
-  android:textSize="48sp"
+  android:textColor="#68acf6"
+  android:textSize="22sp"
         android:textAlignment="textStart"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp" />
 
         <EditText
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="45dp"
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/etAgg"
-        android:textSize="20sp"
-        android:layout_below="@+id/textView10"
-        android:gravity="start|top"
-        android:background="@drawable/newpanel"
+        android:textSize="18sp"
+            android:gravity="center_vertical|start"
+        android:background="@drawable/twolines"
         android:textColor="#FFFF"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp" />
+            android:layout_marginRight="15dp"
+            android:layout_below="@+id/textView9"
+            android:layout_marginTop="15dp"
+            android:textAlignment="gravity" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:text="Submit"
-        android:id="@+id/btnAgg"
-        android:textSize="30sp"
-        android:textColor="#FFFF"
-        android:background="@drawable/newpanel"
-        android:clickable="true"
-        android:layout_below="@+id/etAggLocDes"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
-
-    <EditText
+        <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:id="@+id/etAggURL"
-        android:textSize="20sp"
-        android:layout_alignParentEnd="true"
-        android:textColor="#FFFF"
+        android:textSize="18sp"
+            android:textColor="#FFFF"
         android:singleLine="true"
-        android:layout_below="@+id/etAgg"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/newpanel"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp" />
+            android:background="@drawable/oneline"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:textAlignment="gravity"
+            android:layout_below="@+id/etAggLocDes"
+            android:layout_alignStart="@+id/etAggLocDes" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/ivAggPic1"
         android:background="@drawable/photoboarder"
-        android:layout_marginTop="70dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/etAgg"
-        android:layout_marginLeft="15dp" />
+        android:layout_below="@+id/etAggURL"
+        android:layout_alignStart="@+id/btnAgg"
+        android:layout_marginTop="15dp" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/ivAggPic3"
         android:background="@drawable/photoboarder"
-        android:layout_alignTop="@+id/ivAggPic2"
-        android:layout_toEndOf="@+id/ivAggPic2"
-        android:layout_marginLeft="15dp" />
+        android:layout_marginLeft="15dp"
+        android:layout_above="@+id/btnAgg"
+        android:layout_alignEnd="@+id/etAggURL" />
 
-    <EditText
-        android:layout_width="241dp"
-        android:layout_height="40dp"
-        android:id="@+id/etAggLocDes"
-        android:textSize="20sp"
-        android:layout_marginRight="5dp"
-        android:layout_alignBottom="@+id/ibAggMap"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/ibAggMap"
-        android:textColor="#FFFF"
-        android:singleLine="true"
-        android:layout_alignTop="@+id/ibAggMap"
-        android:background="@drawable/newpanel"
-        android:layout_marginLeft="15dp" />
-
-    <ImageButton
-        android:layout_width="65dp"
-        android:layout_height="45dp"
+        <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="35dp"
         android:id="@+id/ibAggMap"
         android:background="@drawable/map"
-        android:layout_below="@+id/ivAggPic3"
-        android:layout_alignEnd="@+id/btnAgg"
-        android:layout_marginTop="15dp" />
+            android:layout_above="@+id/ivAggPic1"
+            android:layout_alignEnd="@+id/etAggLocDes"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="3dp" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/ivAggPic2"
         android:background="@drawable/photoboarder"
-        android:layout_marginLeft="5dp"
-        android:layout_alignTop="@+id/ivAggPic1"
-        android:layout_toEndOf="@+id/textView10" />
+        android:layout_marginLeft="15dp"
+        android:layout_above="@+id/btnAgg"
+        android:layout_centerHorizontal="true" />
 
-    <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:id="@+id/ibAggDelOne"
-        android:background="@drawable/del"
-        android:layout_alignTop="@+id/ivAggPic1"
-        android:layout_alignEnd="@+id/ivAggPic1" />
+        <EditText
+            android:layout_width="241dp"
+            android:layout_height="45dp"
+            android:id="@+id/etAggLocDes"
+            android:textSize="18sp"
+            android:textColor="#FFFF"
+            android:singleLine="true"
+            android:background="@drawable/oneline"
+            android:layout_below="@+id/etAgg"
+            android:layout_alignEnd="@+id/btnAgg"
+            android:gravity="center_vertical"
+            android:textAlignment="gravity"
+            android:layout_alignStart="@+id/etAgg" />
 
-    <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:id="@+id/ibAggDelTwo"
-        android:layout_alignTop="@+id/ivAggPic2"
-        android:layout_alignEnd="@+id/ivAggPic2"
-        android:background="@drawable/del" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Submit"
+            android:id="@+id/btnAgg"
+            android:textSize="22sp"
+            android:textColor="#FFFF"
+            android:background="@drawable/ripple_effect"
+            android:clickable="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/ivAggPic1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp" />
 
-    <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:id="@+id/ibAggDelThree"
-        android:layout_alignTop="@+id/ivAggPic3"
-        android:layout_alignEnd="@+id/ivAggPic3"
-        android:background="@drawable/del" />
     </RelativeLayout>
 </ScrollView>
+
 </RelativeLayout>

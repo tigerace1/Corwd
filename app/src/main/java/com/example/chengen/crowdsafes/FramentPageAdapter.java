@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-public class FramentPageAdapter extends FragmentPagerAdapter {
+public class FramentPageAdapter extends FragmentPagerAdapter{
     List<Fragment>fragmentList;
     public FramentPageAdapter(FragmentManager fm,List<Fragment>fragmentList) {
         super(fm);
@@ -20,4 +20,4 @@ public class FramentPageAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return fragmentList.size();
     }
-}
+ }

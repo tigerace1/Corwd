@@ -10,12 +10,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -36,11 +36,13 @@ import java.net.URLConnection;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.util.Arrays;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
-public class Suspicion extends Fragment implements View.OnClickListener {
+
+public class Suspicion extends Fragment implements View.OnClickListener{
     private EditText reportDescription,locationDes,videoURL;
     private ImageView Image1,Image2,Image3;
     private String target;
@@ -61,87 +63,71 @@ public class Suspicion extends Fragment implements View.OnClickListener {
         Image1 = (ImageView) v.findViewById(R.id.ivSuspPic1);
         Image2 = (ImageView) v.findViewById(R.id.ivSuspPic2);
         Image3 = (ImageView) v.findViewById(R.id.ivSuspPic3);
-        ImageButton delOne =(ImageButton) v.findViewById(R.id.ibSuspDelOne);
-        ImageButton delTwo = (ImageButton) v.findViewById(R.id.ibSuspDelTwo);
-        ImageButton delThree = (ImageButton) v.findViewById(R.id.ibSuspDelThree);
         locationDes = (EditText) v.findViewById(R.id.etSuspLocDes);
         videoURL = (EditText) v.findViewById(R.id.etSuspURL);
         send = (Button) v.findViewById(R.id.btnSusp);
         send.setClickable(true);
         ImageButton missMap = (ImageButton) v.findViewById(R.id.ibSuspMap);
+        missMap.bringToFront();
         send.setOnClickListener(this);
         missMap.setOnClickListener(this);
-        delOne.setOnClickListener(this);
-        delTwo.setOnClickListener(this);
-        delThree.setOnClickListener(this);
         Image1.setOnClickListener(this);
         Image2.setOnClickListener(this);
         Image3.setOnClickListener(this);
-        reportDescription.setText("");
-        locationDes.setText("");
-        videoURL.setText("");
         reportDescription.setScrollbarFadingEnabled(true);
-        reportDescription.setHint("Contains time, description of the object");
-        videoURL.setHint("video url here");
-        locationDes.setHint("Location description");
+        reportDescription.setHint("Describe the situation");
+        locationDes.setHint("Describe your location");
+        videoURL.setHint("Attach your video's url here");
+        reportDescription.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
+        locationDes.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
+        videoURL.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
         return v;
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnSusp:
-                send.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.anim_two));
-                send.setClickable(false);
-                if (Image1.getDrawable() != null) {
-                    Bitmap image1 = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
-                    photoByte1 = bitMapToString(image1);
-                }
-                if (Image2.getDrawable() != null) {
-                    Bitmap image2 = ((BitmapDrawable) Image2.getDrawable()).getBitmap();
-                    photoByte2= bitMapToString(image2);
-                }
-                if (Image3.getDrawable() != null) {
-                    Bitmap image3 = ((BitmapDrawable) Image3.getDrawable()).getBitmap();
-                    photoByte3 = bitMapToString(image3);
-                }
-                target = MapsActivity.getTarget();
-                Thread t = new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            upLoadToDB(reportDescription.getText().toString(),
-                                    photoByte1,photoByte2,photoByte3,videoURL.getText().toString(),
-                                    target, locationDes.getText().toString());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                t.start();
-                try {
-                    t.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if(isSend==false) {
-                    send.setClickable(true);
-                    Toast.makeText(getActivity(), "Upload failed", Toast.LENGTH_LONG).show();
-                }
+                OnSendButtonPress();
                 break;
             case R.id.ivSuspPic1:
                 PopupMenu popup1 = new PopupMenu(getActivity(),Image1);
                 popup1.getMenuInflater().inflate(R.menu.popup_menu, popup1.getMenu());
                 popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().equals("choose a photo")) {
-                            Intent intentOne = new Intent();
+                        Intent intentOne = new Intent();
+                        if (item.getTitle().equals("Choose existed")) {
                             intentOne.setType("image/*");
                             intentOne.setAction(Intent.ACTION_GET_CONTENT);
                             startActivityForResult(Intent.createChooser(intentOne, "Select Picture"), 7);
-                        } else if (item.getTitle().equals("take a picture")) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, 0);
+                        } else if (item.getTitle().equals("Take a photo")) {
+                            intentOne = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intentOne, 0);
+                        } else if(item.getTitle().equals("Delete")){
+                            if(Image1.getDrawable()==null){
+                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
+                            }else
+                            if(Image1.getDrawable().getMinimumWidth()==0){
+                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
+                            }else {
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                                builder1.setCancelable(false);
+                                builder1.setMessage("Do you want to Delete this photo?");
+                                builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Image1.setImageBitmap(null);
+                                        pictureOne = null;
+                                    }
+                                });
+                                builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                AlertDialog alert1 = builder1.create();
+                                alert1.show();
+                            }
                         }
                         return true;
                     }
@@ -153,14 +139,40 @@ public class Suspicion extends Fragment implements View.OnClickListener {
                 popup2.getMenuInflater().inflate(R.menu.popup_menu, popup2.getMenu());
                 popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().equals("choose a photo")) {
-                            Intent intentTwo = new Intent();
+                        Intent intentTwo = new Intent();
+                        if (item.getTitle().equals("Choose existed")) {
                             intentTwo.setType("image/*");
                             intentTwo.setAction(Intent.ACTION_GET_CONTENT);
                             startActivityForResult(Intent.createChooser(intentTwo, "Select Picture"), 8);
-                        } else if (item.getTitle().equals("take a picture")) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, 1);
+                        } else if (item.getTitle().equals("Take a photo")) {
+                            intentTwo = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intentTwo, 1);
+                        } else if(item.getTitle().equals("Delete")) {
+                            if(Image2.getDrawable()==null){
+                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
+                            }else
+                            if (Image2.getDrawable().getMinimumWidth()==0) {
+                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
+                            }else {
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                                builder1.setCancelable(false);
+                                builder1.setMessage("Do you want to Delete this photo?");
+                                builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Image2.setImageBitmap(null);
+                                        pictureTwo = null;
+                                    }
+                                });
+                                builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                AlertDialog alert1 = builder1.create();
+                                alert1.show();
+                            }
                         }
                         return true;
                     }
@@ -172,83 +184,88 @@ public class Suspicion extends Fragment implements View.OnClickListener {
                 popup3.getMenuInflater().inflate(R.menu.popup_menu, popup3.getMenu());
                 popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().equals("choose a photo")) {
-                            Intent intentThree = new Intent();
+                        Intent intentThree = new Intent();
+                        if (item.getTitle().equals("Choose existed")) {
                             intentThree.setType("image/*");
                             intentThree.setAction(Intent.ACTION_GET_CONTENT);
-                            startActivityForResult(Intent.createChooser(intentThree, "Select Picture"),9);
-                        } else if (item.getTitle().equals("take a picture")) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent,2);
+                            startActivityForResult(Intent.createChooser(intentThree, "Select Picture"), 9);
+                        } else if (item.getTitle().equals("Take a photo")) {
+                            intentThree = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intentThree, 2);
+                        } else if(item.getTitle().equals("Delete")) {
+                            if(Image3.getDrawable()==null){
+                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
+                            }else
+                            if (Image3.getDrawable().getMinimumWidth()==0){
+                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
+                            } else {
+                                AlertDialog.Builder builder3 = new AlertDialog.Builder(getActivity());
+                                builder3.setCancelable(false);
+                                builder3.setMessage("Do you want to Delete this photo?");
+                                builder3.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Image3.setImageBitmap(null);
+                                        pictureThree = null;
+                                    }
+                                });
+                                builder3.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                AlertDialog alert3 = builder3.create();
+                                alert3.show();
+                            }
                         }
                         return true;
                     }
                 });
                 popup3.show();
                 break;
-            case R.id.ibSuspDelOne:
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-                builder1.setCancelable(false);
-                builder1.setMessage("Do you want to Delete this photo?");
-                builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Image1.setImageBitmap(null);
-                        pictureOne=null;
-                    }
-                });
-                builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog alert1 = builder1.create();
-                alert1.show();
-                break;
-            case R.id.ibSuspDelTwo:
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
-                builder2.setCancelable(false);
-                builder2.setMessage("Do you want to Delete this photo?");
-                builder2.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Image2.setImageBitmap(null);
-                        pictureTwo=null;
-                    }
-                });
-                builder2.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog alert2 = builder2.create();
-                alert2.show();
-                break;
-            case R.id.ibSuspDelThree:
-                AlertDialog.Builder builder3 = new AlertDialog.Builder(getActivity());
-                builder3.setCancelable(false);
-                builder3.setMessage("Do you want to Delete this photo?");
-                builder3.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Image3.setImageBitmap(null);
-                        pictureThree=null;
-                    }
-                });
-                builder3.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog alert3 = builder3.create();
-                alert3.show();
-                break;
             case R.id.ibSuspMap:
                 Intent map = new Intent(getActivity(),MapsActivity.class);
                 startActivity(map);
+        }
+    }
+    private void OnSendButtonPress(){
+        send.setClickable(false);
+        if (Image1.getDrawable() != null && Image1.getDrawable().getMinimumWidth() != 0) {
+            Bitmap image1 = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
+            photoByte1 = bitMapToString(image1);
+        }
+        if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
+            Bitmap image2 = ((BitmapDrawable) Image2.getDrawable()).getBitmap();
+            photoByte2 = bitMapToString(image2);
+        }
+        if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
+            Bitmap image3 = ((BitmapDrawable) Image3.getDrawable()).getBitmap();
+            photoByte3 = bitMapToString(image3);
+        }
+        target = MapsActivity.getTarget();
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    upLoadToDB(reportDescription.getText().toString(),
+                            photoByte1,photoByte2,photoByte3,videoURL.getText().toString(),
+                            target, locationDes.getText().toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (!isSend) {
+            send.setClickable(true);
+            Toast.makeText(getActivity(), "Upload failed", Toast.LENGTH_LONG).show();
         }
     }
     @Override
@@ -310,7 +327,7 @@ public class Suspicion extends Fragment implements View.OnClickListener {
     private void upLoadToDB(String reportDescription,
                             byte[] photo,byte[] photo2, byte[] photo3, String video,String location,String locDes){
         String string = "type=Aggression"+"&reportDescription="+reportDescription+
-                "&photo1="+photo+"&photo2="+photo2+"&photo3="+photo3;
+                "&photo1="+ Arrays.toString(photo) +"&photo2="+ Arrays.toString(photo2) +"&photo3="+ Arrays.toString(photo3);
         isSend=true;
         try {
             InputStream is = new BufferedInputStream(getActivity().getAssets().open("dst_root_ca_x3.pem"));

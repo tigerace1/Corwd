@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="0dp"
+    tools:context="com.example.chengen.oner.reciverList"
+    android:background="#303030">
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="520dp"
+        android:layout_alignParentBottom="true">
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="520dp"
+        android:id="@+id/reList"
+        android:choiceMode="singleChoice"
+        android:divider="#FF908F8F"
+        android:dividerHeight="0.5dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
+

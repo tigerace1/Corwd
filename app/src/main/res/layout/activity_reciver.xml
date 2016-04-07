@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="130dp" android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    tools:context="com.example.chengen.oner.RECIVER">
+
+    <ImageView
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:id="@+id/ivListOne"
+        android:background="@drawable/cap"
+        android:editable="false"
+        android:clickable="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="45dp"
+        android:id="@+id/etType"
+        android:layout_marginLeft="10dp"
+        android:textColor="#FFFF"
+        android:editable="false"
+        android:clickable="false"
+        android:layout_alignTop="@+id/ivListOne"
+        android:layout_toEndOf="@+id/ivListOne"
+        android:textAlignment="center"
+        android:textSize="18dp"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="230dp"
+        android:layout_height="70dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/etReportDescription"
+        android:textColor="#FFFF"
+        android:editable="false"
+        android:clickable="false"
+        android:gravity="left|top"
+        android:textSize="18dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/etType"
+        android:layout_alignEnd="@+id/etLocationDes" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/etLocationDes"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/etType"
+        android:textColor="#FFFF"
+        android:editable="false"
+        android:clickable="false"
+        android:layout_marginLeft="10dp"
+        android:textAlignment="center"
+        android:textSize="18dp"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/etLocation"
+        android:editable="false"
+        android:clickable="false"
+        android:layout_toEndOf="@+id/etReportDescription"
+        android:textColor="#FFFF"
+        android:visibility="invisible" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/etReportType"
+        android:layout_below="@+id/ivListOne"
+        android:layout_alignEnd="@+id/etType"
+        android:visibility="invisible"
+        android:textColor="#FFFF" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/etMissingType"
+        android:layout_alignTop="@+id/etReportType"
+        android:layout_alignStart="@+id/etReportType"
+        android:visibility="invisible"
+        android:textColor="#FFFF" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/etResponseTo"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/etReportType"
+        android:layout_marginEnd="45dp"
+        android:visibility="invisible"
+        android:textColor="#FFFF" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/etContact"
+        android:layout_below="@+id/ivListOne"
+        android:layout_toStartOf="@+id/etReportType"
+        android:visibility="invisible"
+        android:textColor="#FFFF" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/etVideo"
+        android:layout_below="@+id/etReportType"
+        android:visibility="invisible"
+        android:textColor="#FFFF" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/ivVideoIcon"
+        android:background="@drawable/playvideo"
+        android:layout_alignBottom="@+id/etReportDescription"
+        android:layout_alignStart="@+id/etVideo" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/ivListTwo"
+        android:layout_marginLeft="5dp"
+        android:layout_alignBottom="@+id/etReportDescription"
+        android:layout_toEndOf="@+id/ivVideoIcon" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/ivListThree"
+        android:layout_alignBottom="@+id/etReportDescription"
+        android:layout_toEndOf="@+id/ivListTwo" />
+
+</RelativeLayout>

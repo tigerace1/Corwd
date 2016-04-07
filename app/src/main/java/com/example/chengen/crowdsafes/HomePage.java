@@ -1,95 +1,254 @@
 package com.example.chengen.crowdsafes;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-public class HomePage extends Fragment implements ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener{
-    private ViewPager viewPager;
-    private TabHost tabHost;
+public class HomePage extends Fragment implements View.OnClickListener, Animation.AnimationListener {
+    private ImageButton agg;
+    private ImageButton miss;
+    private ImageButton med;
+    private ImageButton san;
+    private ImageButton susp;
+    TextView tvAgg;
+    TextView tvMiss;
+    TextView tvMed;
+    TextView tvSan;
+    TextView tvSusp;
     private View v;
-    private int i=0;
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        v = inflater.inflate(R.layout.home_page_layout, container, false);
-        initPager();
-        initHost();
-        i++;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        v = inflater.inflate(R.layout.activity_home_page, container, false);
+        agg = (ImageButton)v.findViewById(R.id.ibAgg);
+        miss = (ImageButton)v.findViewById(R.id.ibMiss);
+        med = (ImageButton)v.findViewById(R.id.ibMed);
+        san = (ImageButton)v.findViewById(R.id.ibSan);
+        susp = (ImageButton)v.findViewById(R.id.ibSusp);
+        tvAgg = (TextView) v.findViewById(R.id.tvAgg);
+        tvMiss = (TextView) v.findViewById(R.id.tvMiss);
+        tvMed = (TextView) v.findViewById(R.id.tvMed);
+        tvSan = (TextView) v.findViewById(R.id.tvSan);
+        tvSusp = (TextView) v.findViewById(R.id.tvSusp);
+        Animation an = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_text);
+        tvAgg.startAnimation(an);
+        tvMiss.startAnimation(an);
+        tvMed.startAnimation(an);
+        tvSan.startAnimation(an);
+        tvSusp.startAnimation(an);
+        agg.startAnimation(an);
+        miss.startAnimation(an);
+        med.startAnimation(an);
+        san.startAnimation(an);
+        susp.startAnimation(an);
+        agg.setOnClickListener(this);
+        miss.setOnClickListener(this);
+        med.setOnClickListener(this);
+        san.setOnClickListener(this);
+        susp.setOnClickListener(this);
         return v;
     }
-    private class FakeContent implements TabHost.TabContentFactory{
-        Context context;
-        public FakeContent(Context context){
-            this.context=context;
+    @Override
+    public void onClick(View v) {
+        ImageView title = (ImageView)this.v.findViewById(R.id.ivTitle);
+        Animation one = AnimationUtils.loadAnimation(getActivity(),R.anim.anim_one);
+        Animation Ag = AnimationUtils.loadAnimation(getActivity(),R.anim.home_agg);
+        Animation Sa = AnimationUtils.loadAnimation(getActivity(),R.anim.home_san);
+        Animation Mi = AnimationUtils.loadAnimation(getActivity(),R.anim.home_miss);
+        Animation Su = AnimationUtils.loadAnimation(getActivity(),R.anim.home_susp);
+        Animation Me = AnimationUtils.loadAnimation(getActivity(),R.anim.home_med);
+        one.setAnimationListener(this);
+        Ag.setAnimationListener(this);
+        Sa.setAnimationListener(this);
+        Mi.setAnimationListener(this);
+        Su.setAnimationListener(this);
+        Me.setAnimationListener(this);
+        Thread welcomeThread;
+        switch (v.getId()){
+            case R.id.ibAgg:
+                title.setVisibility(View.INVISIBLE);
+                agg.startAnimation(one);
+                miss.startAnimation(one);
+                med.startAnimation(one);
+                san.startAnimation(one);
+                susp.startAnimation(one);
+                agg.startAnimation(Ag);
+                miss.startAnimation(Mi);
+                med.startAnimation(Me);
+                san.startAnimation(Sa);
+                susp.startAnimation(Su);
+                welcomeThread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            super.run();
+                            sleep(780);
+                        } catch (Exception e) {
+                           e.printStackTrace();
+                        } finally {
+                            startActivity(new Intent(getActivity(), Reports.class).putExtra("page", 0));
+                            getActivity().finish();
+                        }
+                    }
+                };
+                welcomeThread.start();
+                break;
+            case R.id.ibMiss:
+                title.setVisibility(View.INVISIBLE);
+                agg.startAnimation(one);
+                miss.startAnimation(one);
+                med.startAnimation(one);
+                san.startAnimation(one);
+                susp.startAnimation(one);
+                agg.startAnimation(Ag);
+                miss.startAnimation(Mi);
+                med.startAnimation(Me);
+                san.startAnimation(Sa);
+                susp.startAnimation(Su);
+                welcomeThread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            super.run();
+                            sleep(780);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            startActivity(new Intent(getActivity(), Reports.class).putExtra("page",2));
+                            getActivity().finish();
+                        }
+                    }
+                };
+                welcomeThread.start();
+                break;
+            case R.id.ibMed:
+                title.setVisibility(View.INVISIBLE);
+                agg.startAnimation(one);
+                miss.startAnimation(one);
+                med.startAnimation(one);
+                san.startAnimation(one);
+                susp.startAnimation(one);
+                agg.startAnimation(Ag);
+                miss.startAnimation(Mi);
+                med.startAnimation(Me);
+                san.startAnimation(Sa);
+                susp.startAnimation(Su);
+                welcomeThread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            super.run();
+                            sleep(780);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            startActivity(new Intent(getActivity(), Reports.class).putExtra("page",4));
+                            getActivity().finish();
+                        }
+                    }
+                };
+                welcomeThread.start();
+                break;
+            case R.id.ibSan:
+                title.setVisibility(View.INVISIBLE);
+                agg.startAnimation(one);
+                miss.startAnimation(one);
+                med.startAnimation(one);
+                san.startAnimation(one);
+                susp.startAnimation(one);
+                agg.startAnimation(Ag);
+                miss.startAnimation(Mi);
+                med.startAnimation(Me);
+                san.startAnimation(Sa);
+                susp.startAnimation(Su);
+                welcomeThread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            super.run();
+                            sleep(780);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            startActivity(new Intent(getActivity(), Reports.class).putExtra("page",1));
+                            getActivity().finish();
+                        }
+                    }
+                };
+                welcomeThread.start();
+                break;
+            case R.id.ibSusp:
+                title.setVisibility(View.INVISIBLE);
+                agg.startAnimation(one);
+                miss.startAnimation(one);
+                med.startAnimation(one);
+                san.startAnimation(one);
+                susp.startAnimation(one);
+                agg.startAnimation(Ag);
+                miss.startAnimation(Mi);
+                med.startAnimation(Me);
+                san.startAnimation(Sa);
+                susp.startAnimation(Su);
+                welcomeThread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            super.run();
+                            sleep(780);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            startActivity(new Intent(getActivity(), Reports.class).putExtra("page",3));
+                            getActivity().finish();
+                        }
+                    }
+                };
+                welcomeThread.start();
+                break;
         }
-        @Override
-        public View createTabContent(String tag) {
-            View fakeview = new View(context);
-            fakeview.setMinimumHeight(0);
-            fakeview.setMinimumWidth(0);
-            return fakeview;
-        }
-    }
-    private void initHost(){
-        tabHost=(TabHost) v.findViewById(R.id.tabHost);
-        tabHost.setup();
-        String[] tabNames = {"Aggression","Missing","Medical","Sanitary","Suspicion"};
-        Bitmap agg= BitmapFactory.decodeResource(getResources(), R.drawable.btn_aggression_resp);
-        Bitmap miss= BitmapFactory.decodeResource(getResources(), R.drawable.btn_missing_resp);
-        Bitmap med = BitmapFactory.decodeResource(getResources(), R.drawable.btn_medical_resp);
-        Bitmap san = BitmapFactory.decodeResource(getResources(), R.drawable.btn_sanitary_resp);
-        Bitmap susp = BitmapFactory.decodeResource(getResources(), R.drawable.btn_suspicion_resp);
-        Drawable[] icons={new BitmapDrawable(getResources(), agg),new BitmapDrawable(getResources(), miss),
-                new BitmapDrawable(getResources(), med),new BitmapDrawable(getResources(), san),
-                new BitmapDrawable(getResources(), susp)};
-        for(int i=0;i<tabNames.length;i++){
-            TabHost.TabSpec tabSpec;
-            tabSpec = tabHost.newTabSpec(tabNames[i]);
-            tabSpec.setIndicator("",icons[i]);
-            tabSpec.setContent(new FakeContent(getActivity()));
-            tabHost.addTab(tabSpec);
-        }
-        tabHost.setOnTabChangedListener(this);
-    }
-    private void initPager(){
-        List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new Aggression());
-        fragmentList.add(new Missing());
-        fragmentList.add(new Medical());
-        fragmentList.add(new Sanitary());
-        fragmentList.add(new Suspicion());
-        FramentPageAdapter framentPageAdapter = new FramentPageAdapter(
-                getChildFragmentManager(), fragmentList);
-        viewPager =(ViewPager)v.findViewById(R.id.viewpager);
-        viewPager.setAdapter(framentPageAdapter);
-        viewPager.setOnPageChangeListener(this);
     }
     @Override
-    public void onTabChanged(String tabId) {
-        int selectedItem = tabHost.getCurrentTab();
-        viewPager.setCurrentItem(selectedItem);
+    public void onPause() {
+        super.onPause();
+        agg.clearAnimation();
+        miss.clearAnimation();
+        med.clearAnimation();
+        san.clearAnimation();
+        susp.clearAnimation();
     }
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    public void onAnimationStart(Animation animation) {
+    }
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        ImageView iagg = (ImageView)v.findViewById(R.id.ivAgg);
+        ImageView iMiss =(ImageView)v.findViewById(R.id.ivMiss);
+        ImageView iMed = (ImageView)v.findViewById(R.id.ivMed);
+        ImageView iSan = (ImageView)v.findViewById(R.id.ivSan);
+        ImageView iSusp = (ImageView)v.findViewById(R.id.ivSusp);
+        agg.setVisibility(View.INVISIBLE);
+        miss.setVisibility(View.INVISIBLE);
+        med.setVisibility(View.INVISIBLE);
+        san.setVisibility(View.INVISIBLE);
+        susp.setVisibility(View.INVISIBLE);
+        iagg.setVisibility(View.VISIBLE);
+        iMiss.setVisibility(View.VISIBLE);
+        iMed.setVisibility(View.VISIBLE);
+        iSan.setVisibility(View.VISIBLE);
+        iSusp.setVisibility(View.VISIBLE);
+    }
 
-    }
     @Override
-    public void onPageSelected(int position) {
-        tabHost.setCurrentTab(position);
-    }
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
+    public void onAnimationRepeat(Animation animation) {
     }
 }

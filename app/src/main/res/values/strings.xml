@@ -3,4 +3,7 @@
     <string name="drawer_opened">Drawer Open</string>
     <string name="drawer_closed">Drawer Open</string>
     <string name="title_activity_maps">Map</string>
+    <drawable name="clr_pressed">#FFD5D5D5</drawable>
+    <string name="signup">Sign Up</string>
+    <string name="facebook_app_id">340469979410249</string>
 </resources>
