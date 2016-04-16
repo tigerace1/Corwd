@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        android:id="@+id/action_group"
+        android:icon="@drawable/profile"
+        app:showAsAction="always">
     <item
             android:id="@+id/action_loginsignup"
-            android:icon="@drawable/profile"
             android:title="login/signup"
-            app:showAsAction="always"/>
+            app:showAsAction="withText"/>
+</group>
 </menu>
+

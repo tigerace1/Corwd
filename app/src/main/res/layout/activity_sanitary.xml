@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="0dp"
-    android:paddingRight="0dp"
-    android:paddingTop="0dp"
-    android:paddingBottom="0dp"
-    tools:context="com.example.chengen.one.Sanitary"
-    android:background="#303030">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#303030"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    tools:context="com.example.chengen.one.Sanitary">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,113 +16,118 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-    <TextView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:textAppearance="?android:attr/textAppearanceLarge"
-       android:text="Sanitary"
-       android:id="@+id/textView11"
-       android:textSize="22sp"
-       android:textColor="#7d6a58"
-       android:layout_alignParentTop="true"
-       android:layout_centerHorizontal="true"
-       android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp" />
 
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="45dp"
-        android:id="@+id/etSanLocDes"
-        android:textSize="18sp"
-        android:textColor="#FFF"
-        android:singleLine="true"
-        android:background="@drawable/oneline"
-        android:layout_below="@+id/etSan"
-        android:layout_alignEnd="@+id/ibSanMap"
-        android:layout_alignStart="@+id/etSanURL"
-        android:gravity="center_vertical"
-        android:textAlignment="gravity" />
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25dp"
+                android:text="Sanitary"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#7d6a58"
+                android:textSize="22sp" />
 
             <EditText
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center_vertical|start"
-        android:id="@+id/etSan"
-        android:layout_gravity="top"
-        android:textSize="18sp"
-        android:background="@drawable/twolines"
-        android:layout_alignParentStart="true"
-        android:textColor="#FFF"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_below="@+id/textView11"
+                android:id="@+id/etSanLocDes"
+                android:layout_width="250dp"
+                android:layout_height="45dp"
+                android:layout_alignEnd="@+id/ibSanMap"
+                android:layout_alignStart="@+id/etSanURL"
+                android:layout_below="@+id/etSan"
+                android:background="@drawable/oneline"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textAlignment="gravity"
+                android:textColor="#FFF"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/etSan"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView11"
+                android:layout_gravity="top"
                 android:layout_marginTop="10dp"
-                android:textAlignment="gravity" />
+                android:background="@drawable/twolines"
+                android:gravity="center_vertical|start"
+                android:textAlignment="gravity"
+                android:textColor="#FFF"
+                android:textSize="18sp" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:id="@+id/etSanURL"
-        android:textSize="18sp"
-        android:textColor="#FFF"
-        android:singleLine="true"
-        android:background="@drawable/oneline"
-        android:layout_marginRight="15dp"
-        android:gravity="center_vertical"
-        android:textAlignment="gravity"
-        android:layout_below="@+id/ibSanMap"
-        android:layout_alignStart="@+id/etSan" />
+            <EditText
+                android:id="@+id/etSanURL"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_alignStart="@+id/etSan"
+                android:layout_below="@+id/ibSanMap"
+                android:background="@drawable/oneline"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textAlignment="gravity"
+                android:textColor="#FFF"
+                android:textSize="18sp" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Requse"
-        android:id="@+id/btnSan"
-        android:textSize="22sp"
-        android:textAlignment="center"
-        android:textColor="#FFFF"
-        android:background="@drawable/ripple_effect"
-        android:layout_marginRight="20dp"
-        android:layout_below="@+id/ivSanPic2"
-        android:layout_alignStart="@+id/etSanURL"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
+            <Button
+                android:id="@+id/btnSan"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignStart="@+id/etSanURL"
+                android:layout_below="@+id/linearLayout3"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ripple_effect"
+                android:text="Requse"
+                android:textAlignment="center"
+                android:textColor="#FFFF"
+                android:textSize="22sp" />
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/ivSanPic1"
-        android:background="@drawable/photoboarder"
-        android:layout_below="@+id/etSanURL"
-        android:layout_alignStart="@+id/etSanURL"
-        android:layout_marginTop="15dp" />
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/etSanURL"
+                android:layout_marginTop="15dp"
+                android:weightSum="3">
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/ivSanPic2"
-        android:background="@drawable/photoboarder"
-        android:layout_marginLeft="15dp"
-        android:layout_alignTop="@+id/ivSanPic1"
-        android:layout_centerHorizontal="true" />
+                <ImageView
+                    android:id="@+id/ivSanPic1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/newboarderofphoto" />
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/ivSanPic3"
-        android:background="@drawable/photoboarder"
-        android:layout_marginLeft="15dp"
-        android:layout_alignTop="@+id/ivSanPic2"
-        android:layout_alignEnd="@+id/ibSanMap" />
+                <ImageView
+                    android:id="@+id/ivSanPic2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/newboarderofphoto" />
+
+                <ImageView
+                    android:id="@+id/ivSanPic3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/newboarderofphoto" />
+            </LinearLayout>
 
             <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="35dp"
-        android:id="@+id/ibSanMap"
-        android:background="@drawable/map"
-        android:layout_alignTop="@+id/etSanLocDes"
-        android:layout_alignEnd="@+id/etSanURL"
-                android:layout_marginTop="8dp" />
+                android:id="@+id/ibSanMap"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:layout_alignEnd="@+id/etSanURL"
+                android:layout_alignTop="@+id/etSanLocDes"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/map" />
 
         </RelativeLayout>
     </ScrollView>

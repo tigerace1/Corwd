@@ -16,6 +16,7 @@ public class ReciverPhoto extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_reciver_photo);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.crowdsafelogo);
+        getSupportActionBar().setTitle("");
         TextView Title = (TextView)findViewById(R.id.tvTitle);
         TextView Description=(TextView)findViewById(R.id.tvReportDescription);
         TextView LocationDes = (TextView)findViewById(R.id.tvLocationDes);
@@ -55,7 +56,6 @@ public class ReciverPhoto extends AppCompatActivity implements View.OnClickListe
                 photoByte3 = b.getByteArray("photosThree");
             if(photoByte1==null&&photoByte2==null&&photoByte3==null)
                 photos.setClickable(false);
-            System.out.println(photoByte1+"  "+photoByte2+"  "+photoByte3);
             if(!(b.get("locationDes")==null)) {
                 locationDes = b.get("locationDes")+"";
                 LocationDes.setText("Location Description: " + locationDes);
@@ -85,6 +85,7 @@ public class ReciverPhoto extends AppCompatActivity implements View.OnClickListe
                Intent intent4 = new Intent(this,MapsActivity.class);
                intent4.putExtra("Location",location);
                intent4.putExtra("LocDescription",locationDes);
+               intent4.putExtra("type",20);
                startActivity(intent4);
                break;
         }

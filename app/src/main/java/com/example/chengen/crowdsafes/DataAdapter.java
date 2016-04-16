@@ -107,9 +107,9 @@ public class DataAdapter extends ArrayAdapter {
         handler.reportDescription.setText(provider.getSituationData());
         handler.locationDes.setText(provider.getLocationDesData());
         handler.location.setText(provider.getLocationData());
-        handler.ImageOne.setImageBitmap(provider.getImagesData1());
-        handler.ImageTwo.setImageBitmap(provider.getImagesData2());
-        handler.ImageThree.setImageBitmap(provider.getImagesData3());
+        handler.ImageOne.setImageDrawable(new BitmapDrawable(getContext().getResources(), provider.getImagesData1()));
+        handler.ImageTwo.setImageDrawable(new BitmapDrawable(getContext().getResources(), provider.getImagesData2()));
+        handler.ImageThree.setImageDrawable(new BitmapDrawable(getContext().getResources(), provider.getImagesData3()));
         handler.responseTo.setText(provider.getResponseTo());
         handler.contact.setText(provider.getContact());
         handler.reportType.setText(provider.getReportType());

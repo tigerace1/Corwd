@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     aaptOptions {
         additionalParameters "--no-version-vectors"
@@ -30,4 +31,6 @@ dependencies {
     compile 'com.android.support:support-v13:23.2.0'
     compile 'com.android.support:design:23.2.0'
     compile 'com.google.android.gms:play-services:8.4.0'
+    compile files('libs/httpclient-4.3.6.jar')
+    compile files('libs/httpcore-4.2.3.jar')
 }

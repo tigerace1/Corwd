@@ -2,20 +2,20 @@ package com.example.chengen.crowdsafes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +28,16 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -42,7 +52,8 @@ import java.net.URLConnection;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -50,16 +61,15 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class Missing extends Fragment implements View.OnClickListener {
     private EditText reportDescription, Contact, RespondTo, missingType, locationDes, videoURL,reward;
-    private static CharSequence[] data;
     private ImageView Image1, Image2, Image3;
     private ToggleButton find, lost;
-    private static String target, reportType;
+    private static String target, reportType,name1,name2,name3;
     private static Bitmap pictureOne, pictureTwo, pictureThree;
-    private byte[] photoByte1, photoByte2, photoByte3;
     private Button send;
     private boolean isSend;
     private final String USER_AGENT = "Mozilla/5.0";
     private final static String Url = "https://www.crowdsafes.com/reportMissing";
+    private static final String SERVER_ADDRESS="http://crowdsafe.azurewebsites.net/";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +90,6 @@ public class Missing extends Fragment implements View.OnClickListener {
         send = (Button) v.findViewById(R.id.btnMiss);
         ImageButton missMap = (ImageButton) v.findViewById(R.id.ibMissMap);
         missMap.bringToFront();
-        target="";
-        reportType="";
         send.setOnClickListener(this);
         missMap.setOnClickListener(this);
         find.setOnClickListener(this);
@@ -89,6 +97,44 @@ public class Missing extends Fragment implements View.OnClickListener {
         Image1.setOnClickListener(this);
         Image2.setOnClickListener(this);
         Image3.setOnClickListener(this);
+        setHints();
+        getData();
+        return v;
+    }
+    private void getData(){
+        SharedPreferences sharedPref =getActivity().getSharedPreferences("missing", Context.MODE_PRIVATE);
+        if (sharedPref.contains("reortdes")) {
+            reportDescription.setText(sharedPref.getString("reportdes", ""));
+            Contact.setText(sharedPref.getString("contact", ""));
+            RespondTo.setText(sharedPref.getString("respond to", ""));
+            missingType.setText(sharedPref.getString("missingtype", ""));
+            locationDes.setText(sharedPref.getString("locationdes", ""));
+            videoURL.setText(sharedPref.getString("videoURL", ""));
+            reward.setText(sharedPref.getString("reward", ""));
+            target = sharedPref.getString("target", "");
+            reportType = sharedPref.getString("reporttype", "");
+        }
+        if(reportType.equals("Found"))
+            found();
+        else if(reportType.equals("Lost"))
+            lost();
+        if(sharedPref.contains("imageone")) {
+            String photoByte1 = sharedPref.getString("imageone", "");
+            Image1.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(photoByte1)));
+        }
+        if(sharedPref.contains("imagetwo")) {
+            String photoByte2 = sharedPref.getString("imagetwo", "");
+            Image2.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(photoByte2)));
+        }
+        if (sharedPref.contains("imageothree")) {
+            String photoByte3 = sharedPref.getString("imagethree", "");
+            Image3.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(photoByte3)));
+        }
+    }
+
+    private void setHints (){
+        target="";
+        reportType="";
         missingType.setHint("The object name");
         reportDescription.setHint("Describe the object");
         Contact.setHint("Your phone number");
@@ -105,59 +151,20 @@ public class Missing extends Fragment implements View.OnClickListener {
         videoURL.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
         reward.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
         reward.setVisibility(View.GONE);
-        missingType.setBackground(new BitmapDrawable(BitmapFactory.decodeResource(getResources(),R.drawable.twolines)));
-        if(savedInstanceState!=null){
-            data = savedInstanceState.getCharSequenceArray("data");
-            reportDescription.setText(data[0]);
-            missingType.setText(data[1]);
-            Contact.setText(data[2]);
-            RespondTo.setText(data[3]);
-            videoURL.setText(data[4]);
-            locationDes.setText(data[5]);
-            target=data[6].toString();
-            reportType=data[7].toString();
-            if(reportType.equals("Found")) {
-                find.setChecked(true);
-                lost.setChecked(false);
-            }else if(reportType.equals("Lost")){
-                find.setChecked(false);
-                lost.setChecked(true);
-            }
-            Parcelable[] parcelables=savedInstanceState.getParcelableArray("photos");
-            assert parcelables != null;
-            if(parcelables[0]!=null) {
-                Image1.setImageBitmap(resizeBitmap((Bitmap) parcelables[0], 100, 100));
-                System.out.println("PPP");
-            }
-            if(parcelables[1]!=null)
-               Image2.setImageBitmap(pictureTwo);
-            if(parcelables[2]!=null)
-               Image3.setImageBitmap(resizeBitmap((Bitmap) parcelables[2], 100, 100));
-            System.out.println("DDD00");
-        }
+        missingType.setBackground(new BitmapDrawable(getResources(),
+                BitmapFactory.decodeResource(getResources(), R.drawable.twolines)));
         reportDescription.setScrollbarFadingEnabled(true);
-        return v;
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tbFound:
-                lost.setChecked(false);
-                find.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOn));
-                lost.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOff));
-                reward.setVisibility(View.GONE);
-                reward.setHeight(0);
-                missingType.setBackground(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.twolines)));
+                found();
                 reportType = "Found";
                 break;
             case R.id.tbLost:
-                find.setChecked(false);
-                lost.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOn));
-                find.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOff));
-                missingType.setBackground(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.oneline)));
+                lost();
                 reportType = "Lost";
-                reward.setHeight(45);
-                reward.setVisibility(View.VISIBLE);
                 break;
             case R.id.btnMiss:
                 OnSendButtonPress();
@@ -296,6 +303,7 @@ public class Missing extends Fragment implements View.OnClickListener {
                 break;
             case R.id.ibMissMap:
                 Intent map = new Intent(getContext(), MapsActivity.class);
+                map.putExtra("type",0);
                 startActivity(map);
                 break;
         }
@@ -303,22 +311,37 @@ public class Missing extends Fragment implements View.OnClickListener {
     private void OnSendButtonPress(){
         send.setClickable(false);
         if (Image1.getDrawable() != null && Image1.getDrawable().getMinimumWidth() != 0) {
-            photoByte1 = bitMapToString(pictureOne);
+            name1 = Calendar.getInstance().get(Calendar.MILLISECOND)+
+                    ""+Calendar.getInstance().get(Calendar.DATE)+""+Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH);
+            new UploadImage(pictureOne, name1).execute();
+            pictureOne.recycle();
         }
         if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
-            photoByte2 = bitMapToString(pictureTwo);
+            name2 = Calendar.getInstance().get(Calendar.MILLISECOND)+
+                    ""+Calendar.getInstance().get(Calendar.DATE)+""+Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH);
+            new UploadImage(pictureTwo, name2).execute();
+            pictureTwo.recycle();
         }
         if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
-            photoByte3 = bitMapToString(pictureThree);
+            name3 = Calendar.getInstance().get(Calendar.MILLISECOND)+
+                    ""+Calendar.getInstance().get(Calendar.DATE)+""+Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH);
+            new UploadImage(pictureThree, name3).execute();
+            pictureThree.recycle();
         }
-        target = MapsActivity.getTarget();
+        SharedPreferences sharedPref =getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
+        if (sharedPref.contains("mssingLoc"))
+            target = sharedPref.getString("missingLoc","");
+        SharedPreferences preferences = getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
         Thread t = new Thread() {
             @Override
             public void run() {
                 super.run();
                 try {
                     upLoadToDB(reportType, missingType.getText().toString(), reportDescription.getText().toString(),
-                            RespondTo.getText().toString(), Contact.getText().toString(), photoByte1, photoByte2, photoByte3,
+                            RespondTo.getText().toString(), Contact.getText().toString(), name1, name2, name3,
                             videoURL.getText().toString(), target, locationDes.getText().toString(),reward.getText().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -363,22 +386,26 @@ public class Missing extends Fragment implements View.OnClickListener {
             switch (requestCode) {
                 case 0:
                     pictureOne = (Bitmap) data.getExtras().get("data");
-                    Image1.setImageBitmap(resizeBitmap(pictureOne,100,100));
+                    Image1.setImageDrawable(new BitmapDrawable(getResources(),
+                            Bitmap.createScaledBitmap(pictureOne,Image1.getWidth(),Image1.getHeight(),false)));
                     break;
                 case 1:
                     pictureTwo = (Bitmap) data.getExtras().get("data");
-                    Image2.setImageBitmap(resizeBitmap(pictureTwo, 100, 100));
+                    Image2.setImageDrawable(new BitmapDrawable(getResources(),
+                            Bitmap.createScaledBitmap(pictureTwo,Image2.getWidth(),Image2.getHeight(),false)));
                     break;
                 case 2:
                     pictureThree = (Bitmap) data.getExtras().get("data");
-                    Image3.setImageBitmap(resizeBitmap(pictureThree, 100, 100));
+                    Image3.setImageDrawable(new BitmapDrawable(getResources(),
+                            Bitmap.createScaledBitmap(pictureThree,Image3.getWidth(),Image3.getHeight(),false)));
                     break;
                 case 7:
                     Uri selectedImage1 = data.getData();
                     getActivity().getContentResolver().notifyChange(selectedImage1, null);
                     try {
                         pictureOne = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage1);
-                        Image1.setImageBitmap(resizeBitmap(pictureOne, 100, 100));
+                        Image1.setImageDrawable(new BitmapDrawable(getResources(),
+                                Bitmap.createScaledBitmap(pictureOne,Image1.getWidth(),Image1.getHeight(),false)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -388,7 +415,8 @@ public class Missing extends Fragment implements View.OnClickListener {
                     getActivity().getContentResolver().notifyChange(selectedImage2, null);
                     try {
                         pictureTwo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage2);
-                        Image2.setImageBitmap(resizeBitmap(pictureTwo, 100, 100));
+                        Image2.setImageDrawable(new BitmapDrawable(getResources(),
+                                Bitmap.createScaledBitmap(pictureTwo,Image2.getWidth(),Image2.getHeight(),false)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -398,7 +426,8 @@ public class Missing extends Fragment implements View.OnClickListener {
                     getActivity().getContentResolver().notifyChange(seletedImage3, null);
                     try {
                         pictureThree = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), seletedImage3);
-                        Image3.setImageBitmap(resizeBitmap(pictureThree, 100, 100));
+                        Image3.setImageDrawable(new BitmapDrawable(getResources(),
+                                Bitmap.createScaledBitmap(pictureThree,Image3.getWidth(),Image3.getHeight(),false)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -406,19 +435,31 @@ public class Missing extends Fragment implements View.OnClickListener {
             }
         }
     }
-
-    private byte[] bitMapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
+    private void found(){
+        lost.setChecked(false);
+        find.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOn));
+        lost.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOff));
+        reward.setVisibility(View.GONE);
+        reward.setHeight(0);
+        missingType.setBackground(new BitmapDrawable(getResources(),
+                BitmapFactory.decodeResource(getResources(), R.drawable.twolines)));
     }
-
+    private void lost(){
+        find.setChecked(false);
+        lost.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOn));
+        find.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOff));
+        missingType.setBackground(new BitmapDrawable(getResources(),
+                BitmapFactory.decodeResource(getResources(), R.drawable.oneline)));
+        reward.setHeight(45);
+        reward.setVisibility(View.VISIBLE);
+    }
     private void upLoadToDB(String reportType, String missingType, String reportDescription,
-                            String responseTo, String contact, byte[] photo1, byte[] photo2, byte[] photo3, String video,
+                            String responseTo, String contact,String photo1,String photo2, String photo3, String video,
                             String location, String locDes,String rewards) {
+
         String string = "txtField1="+missingType + "&txtField2=" + reportDescription +"&txtField3="+contact+
-                "&photo1=" + Arrays.toString(photo1) + "&photo2=" + Arrays.toString(photo2) +
-                "&photo3=" + Arrays.toString(photo3)+"&location="+location+"&reward="+rewards;
+                "&fileUpload=" + photo1 + "&photo2=" + photo2 +
+                "&photo3=" + photo3+"&location="+location+"&reward="+rewards;
         isSend = true;
         try {
             InputStream is = new BufferedInputStream(getActivity().getAssets().open("dst_root_ca_x3.pem"));
@@ -493,38 +534,98 @@ public class Missing extends Fragment implements View.OnClickListener {
             isSend = false;
         }
     }
-    public Bitmap resizeBitmap(Bitmap bitmap,int newWidth,int newHeight) {
-        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
-        float ratioX = newWidth / (float) bitmap.getWidth();
-        float ratioY = newHeight / (float) bitmap.getHeight();
-        float middleX = newWidth / 2.0f;
-        float middleY = newHeight / 2.0f;
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
-        return scaledBitmap;
+    @Override
+    public void onPause() {
+        super.onPause();
+        Thread t = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("missing", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("reportdes", reportDescription.getText().toString());
+                editor.putString("contact", Contact.getText().toString());
+                editor.putString("respond to", RespondTo.getText().toString());
+                editor.putString("missingtype", missingType.getText().toString());
+                editor.putString("locationdes", locationDes.getText().toString());
+                editor.putString("videoURL", videoURL.getText().toString());
+                editor.putString("reward",reward.getText().toString());
+                editor.putString("target",target+"");
+                editor.putString("reporttype",reportType+"");
+                if(pictureOne!=null)
+                    editor.putString("imageone",bitMapToString(pictureOne));
+                if(pictureTwo!=null)
+                    editor.putString("imagetwo",bitMapToString(pictureTwo));
+                if(pictureThree!=null)
+                    editor.putString("imagethree",bitMapToString(pictureThree));
+                editor.apply();
+            }
+        };
+        t.start();
+    }
+    private String bitMapToString(Bitmap bitmap){
+        System.gc();
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte [] b=baos.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+    public Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte=Base64.decode(encodedString,Base64.URL_SAFE);
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        data=  new CharSequence[8];
-        data[0]=reportDescription.getText();
-        data[1]=missingType.getText();
-        data[2]=Contact.getText();
-        data[3]=RespondTo.getText();
-        data[4]=videoURL.getText();
-        data[5]=locationDes.getText();
-        data[6]=target;
-        data[7]=reportType;
-        Parcelable[] parcelables = new Parcelable[3];
-        parcelables[0]=pictureOne;
-        parcelables[1]=pictureTwo;
-        parcelables[2]=pictureThree;
-        outState.putCharSequenceArray("data",data);
-        outState.putParcelableArray("photos", parcelables);
-        System.out.println("KKK");
+    public void onDestroy() {
+        super.onDestroy();
+        SharedPreferences preferences = getActivity().getSharedPreferences("missing", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+    }
+    private class UploadImage extends AsyncTask<Void, Void, Void> {
+        Bitmap image;
+        String name;
+        public UploadImage(Bitmap image,String name)
+        {
+            this.image=image;
+            this.name = name;
+        }
+        @Override
+        protected Void doInBackground(Void... params){
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+            dataToSend.add(new BasicNameValuePair("image",encodedImage));
+            dataToSend.add(new BasicNameValuePair("name",name));
+            HttpParams httpParams = getHttpRequestParams();
+            HttpClient client = new DefaultHttpClient(httpParams);
+            HttpPost post = new HttpPost(SERVER_ADDRESS+"SavePicture.php");
+            try{
+                post.setEntity(new UrlEncodedFormEntity(dataToSend));
+                client.execute(post);
+            }catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(getActivity().getApplicationContext(),"Image Uploaded",Toast.LENGTH_SHORT).show();
+        }
+    }
+    private HttpParams getHttpRequestParams(){
+        HttpParams httpRequestParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpRequestParams, 1000 * 30);
+        HttpConnectionParams.setSoTimeout(httpRequestParams, 1000 * 30);
+        return httpRequestParams;
     }
 }
 

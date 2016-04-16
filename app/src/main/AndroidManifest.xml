@@ -52,13 +52,15 @@
         </activity>
         <activity android:name=".NavigationMenu" >
         </activity>
-        <activity android:name=".ReciverPhoto" >
+        <activity android:name=".ReciverPhoto"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ShowingPhoto" >
         </activity>
         <activity android:name=".ShowingVideos" >
         </activity>
-        <activity android:name=".Reports" >
+        <activity android:name=".Reports"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name=".LoginPage" >
         </activity>
@@ -102,8 +104,6 @@
         <activity android:name=".MyReports" >
         </activity>
         <activity android:name=".MyReportsAdapter" >
-        </activity>
-        <activity android:name=".RoomListProvider" >
         </activity>
     </application>
 

@@ -25,10 +25,9 @@ public class MainActivity extends Activity {
                 SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                 if (sharedPref.contains("firstName")) {
                     startActivity(new Intent(MainActivity.this, NavigationMenu.class));
-                    System.out.println("OOO");
                     finish();
                 } else {
-                    startActivity(new Intent(MainActivity.this, LoginPage.class));
+                    startActivity(new Intent(MainActivity.this, NavigationMenu.class));
                     finish();
                 }
             }

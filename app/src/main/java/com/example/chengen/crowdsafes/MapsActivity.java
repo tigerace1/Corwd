@@ -1,5 +1,8 @@
 package com.example.chengen.crowdsafes;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -49,16 +52,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Toast.makeText(this, "Unknow Location", Toast.LENGTH_LONG).show();
             } else {
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                latitude = myLocation.getLatitude();
-                longitude = myLocation.getLongitude();
-                LatLng latLng = new LatLng(latitude, longitude);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(20));
-                MarkerOptions maker = new MarkerOptions().draggable(true).position(new LatLng(latitude,longitude)).title("Your are here!");
-                Marker marker = mMap.addMarker(maker);
-                marker.showInfoWindow();
-                marker.setDraggable(true);
-               mMap.setOnMarkerDragListener(this);
+                Intent ii2 = getIntent();
+                Bundle v2 = ii2.getExtras();
+                if(v2!=null){
+                    if(v2.getString("Location")!=null)
+                    latitude = myLocation.getLatitude();
+                    longitude = myLocation.getLongitude();
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(20));
+                    MarkerOptions maker = new MarkerOptions().draggable(true).position(new LatLng(latitude,longitude))
+                            .title(v2.getString("LocDescription"));
+                    Marker marker = mMap.addMarker(maker);
+                    marker.showInfoWindow();
+                    marker.setDraggable(false);
+                }else {
+                    latitude = myLocation.getLatitude();
+                    longitude = myLocation.getLongitude();
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(20));
+                    MarkerOptions maker = new MarkerOptions().draggable(true).position(new LatLng(latitude, longitude)).title("Your are here!");
+                    Marker marker = mMap.addMarker(maker);
+                    marker.showInfoWindow();
+                    marker.setDraggable(true);
+                }
+                mMap.setOnMarkerDragListener(this);
             }
         }
 
@@ -76,4 +95,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMarkerDragEnd(Marker marker) {
        
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = getIntent();
+        Bundle b = i.getExtras();
+        int count = 0;
+        if(b!=null)
+           count = b.getInt("type");
+        SharedPreferences sharedPref=getSharedPreferences("Location", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        switch (count){
+            case 0:
+                editor = sharedPref.edit();
+                editor.putString("missingLoc",longitude+","+latitude);
+                editor.apply();
+                break;
+            case 1:
+                editor = sharedPref.edit();
+                editor.putString("aggressionLoc",longitude+","+latitude);
+                editor.apply();
+                break;
+            case 2:
+                editor = sharedPref.edit();
+                editor.putString("medicalLoc",longitude+","+latitude);
+                editor.apply();
+                break;
+            case 3:
+                editor = sharedPref.edit();
+                editor.putString("sanitaryLoc",longitude+","+latitude);
+                editor.apply();
+                break;
+            case 4:
+                editor = sharedPref.edit();
+                editor.putString("suspicionLoc",longitude+","+latitude);
+                editor.apply();
+                break;
+            case 10:
+                startActivity(new Intent(this,NavigationMenu.class));
+                break;
+            case 20:
+                startActivity(new Intent(this,ReciverPhoto.class));
+                break;
+        }
     }
+}

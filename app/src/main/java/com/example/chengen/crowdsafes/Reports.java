@@ -50,19 +50,13 @@ public class Reports extends AppCompatActivity implements ViewPager.OnPageChange
             i=b.getInt("page");
         }
         fragmentList = new ArrayList<>();
-        if(savedInstanceState==null){
-            fragmentList.add(new Aggression());
-            fragmentList.add(new Sanitary());
-            fragmentList.add(new Missing());
-            fragmentList.add(new Suspicion());
-            fragmentList.add(new Medical());
-            initPager();
-            initHost();
-        }else{
-            fragmentList.add((Fragment) savedInstanceState.getParcelable("data"));
-            initPager();
-            initHost();
-        }
+        fragmentList.add(new Aggression());
+        fragmentList.add(new Sanitary());
+        fragmentList.add(new Missing());
+        fragmentList.add(new Suspicion());
+        fragmentList.add(new Medical());
+        initPager();
+        initHost();
     }
     private class FakeContent implements TabHost.TabContentFactory{
         Context context;

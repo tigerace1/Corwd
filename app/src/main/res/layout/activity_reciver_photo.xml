@@ -3,16 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.chengen.oner.reciverPhoto"
-    android:background="#303030">
-
+    android:background="#303030"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
     <TextView
-        android:layout_width="260dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/tvTitle"
         android:textSize="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFFF" />
+        android:textColor="#FFFF"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -29,37 +39,43 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/tvLocationDes"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@+id/tvReportDescription"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
         android:textColor="#FFFF" />
-
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:weightSum="3"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentEnd="true"
+      android:layout_marginBottom="15dp"
+      android:layout_marginTop="35dp"
+      android:layout_below="@+id/tvLocationDes">
     <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@+id/iBVideo"
-        android:background="#38b9ec"
-        android:foreground="@drawable/playvideo"
-        android:layout_alignBottom="@+id/ibPhotos"
-        android:layout_centerHorizontal="true" />
+        android:background="@drawable/video" />
 
     <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="60dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@+id/iBmap"
-        android:background="@drawable/map"
-        android:layout_alignTop="@+id/ibPhotos"
-        android:layout_alignParentStart="false" />
+        android:background="@drawable/newmap"
+        android:layout_marginLeft="5dp" />
 
     <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="60dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@+id/ibPhotos"
-        android:background="@drawable/gallery_icon"
-        android:layout_marginTop="114dp"
-        android:layout_below="@+id/tvLocationDes"
-        android:layout_alignRight="@+id/tvLocationDes"
-        android:layout_alignEnd="@+id/tvLocationDes" />
-
+        android:background="@drawable/newpictures"
+        android:layout_marginLeft="5dp" />
+  </LinearLayout>
+      </RelativeLayout>
+  </ScrollView>
 </RelativeLayout>

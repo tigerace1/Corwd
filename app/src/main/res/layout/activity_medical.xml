@@ -3,15 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.chengen.one.Medical"
-    android:background="#303030">
+    android:background="#303030"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,9 +40,9 @@
         android:textColor="#FFFF"
                 android:layout_below="@+id/tbMy"
                 android:layout_marginTop="10dp"
-                android:layout_alignEnd="@+id/ibMedMap"
                 android:textAlignment="gravity"
-                android:layout_alignStart="@+id/etMedLocDes" />
+                android:layout_alignStart="@+id/etMedLocDes"
+                android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -49,7 +52,6 @@
         android:textColor="#FFFF"
         android:singleLine="true"
         android:background="@drawable/oneline"
-        android:layout_marginRight="15dp"
         android:gravity="center_vertical"
         android:textAlignment="gravity"
         android:layout_below="@+id/etMedLocDes"
@@ -91,8 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:id="@+id/etMedLocDes"
-                android:layout_marginRight="15dp"
-        android:textColor="#FFFF"
+                android:textColor="#FFFF"
         android:singleLine="true"
         android:textSize="18sp"
                 android:background="@drawable/oneline"
@@ -106,10 +107,40 @@
         android:layout_height="35dp"
         android:id="@+id/ibMedMap"
         android:background="@drawable/map"
-        android:layout_alignTop="@+id/etMedLocDes"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp" />
+        android:layout_above="@+id/etMedURL"
+        android:layout_alignParentEnd="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_below="@+id/etMedURL"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:id="@+id/linearLayout4">
+                      <ImageView
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:id="@+id/ivMedPic1"
+                          android:background="@drawable/newboarderofphoto" />
+
+                      <ImageView
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:id="@+id/ivMedPic3"
+                          android:background="@drawable/newboarderofphoto"
+                          android:layout_marginLeft="5dp" />
+
+                      <ImageView
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:id="@+id/ivMedPic2"
+                          android:background="@drawable/newboarderofphoto"
+                          android:layout_marginLeft="5dp" />
+            </LinearLayout>
 
             <Button
                 android:layout_width="match_parent"
@@ -121,38 +152,10 @@
                 android:textSize="22sp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_below="@+id/ivMedPic1"
-                android:layout_marginTop="25dp"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="20dp" />
-
-            <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/ivMedPic1"
-                android:background="@drawable/photoboarder"
-                android:layout_below="@+id/etMedURL"
-                android:layout_alignStart="@+id/etMedURL"
-                android:layout_marginTop="15dp" />
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:id="@+id/ivMedPic3"
-                android:background="@drawable/photoboarder"
-                android:layout_marginLeft="15dp"
-                android:layout_above="@+id/btnMed"
-                android:layout_alignEnd="@+id/btnMed" />
-
-            <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/ivMedPic2"
-        android:background="@drawable/photoboarder"
-                android:layout_marginLeft="15dp"
-                android:layout_above="@+id/btnMed"
-                android:layout_centerHorizontal="true" />
-
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/linearLayout4"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp" />
         </RelativeLayout>
     </ScrollView>
 

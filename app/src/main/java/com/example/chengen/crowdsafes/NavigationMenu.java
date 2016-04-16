@@ -1,8 +1,10 @@
 package com.example.chengen.crowdsafes;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -36,8 +38,12 @@ public class NavigationMenu extends AppCompatActivity {
         setContentView(R.layout.activity_navigation_menu);
         Intent ii = getIntent();
         Bundle b = ii.getExtras();
-        if(b!=null)
-          count = b.getInt("count");
+        if(b!=null) {
+            count = b.getInt("count");
+        }
+        SharedPreferences sharedPref =getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        if (sharedPref.contains("username"))
+            getSupportActionBar().setTitle("Hello: "+sharedPref.getString("username",""));
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -56,19 +62,11 @@ public class NavigationMenu extends AppCompatActivity {
         listNavItems.add(new NavItem("About...",about));
         listNavItems.add(new NavItem("Settings",setting));
         listFragments = new ArrayList<>();
-        if(savedInstanceState==null){
-            listFragments.add(new HomePage());
-            listFragments.add(new ReciverList());
-            listFragments.add(new Help());
-            listFragments.add(new About());
-            listFragments.add(new Setting());
-        }else{
-            listFragments.add((Fragment)savedInstanceState.getParcelable("homePage"));
-            listFragments.add(new ReciverList());
-            listFragments.add(new Help());
-            listFragments.add(new About());
-            listFragments.add(new Setting());
-        }
+        listFragments.add(new HomePage());
+        listFragments.add(new ReciverList());
+        listFragments.add(new Help());
+        listFragments.add(new About());
+        listFragments.add(new Setting());
         NavListAdapter navListAdapter = new NavListAdapter(getApplicationContext(),
                 R.layout.nav_item_list,listNavItems);
         listView.setAdapter(navListAdapter);
@@ -109,6 +107,10 @@ public class NavigationMenu extends AppCompatActivity {
         if(actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }else if(item.getItemId()==R.id.action_loginsignup){
+            SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
             startActivity(new Intent(this,LoginPage.class));
             finish();
             return true;

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="2dp"
-    android:paddingRight="2dp"
-    android:paddingTop="2dp"
-    android:paddingBottom="2dp"
+    android:layout_height="match_parent"
     tools:context="com.example.chengen.one.Aggression"
-    android:background="#303030">
+    android:background="#303030"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,18 +16,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignTop="@+id/scrollView"
+        android:layout_alignParentEnd="true">
 
         <TextView
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:textAppearance="?android:attr/textAppearanceLarge"
-  android:text="Aggression"
-  android:id="@+id/textView9"
-  android:textColor="#68acf6"
-  android:textSize="22sp"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textAppearance="?android:attr/textAppearanceLarge"
+       android:text="Aggression"
+       android:id="@+id/textView9"
+       android:textColor="#68acf6"
+       android:textSize="22sp"
         android:textAlignment="textStart"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -44,10 +42,8 @@
             android:gravity="center_vertical|start"
         android:background="@drawable/twolines"
         android:textColor="#FFFF"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
             android:layout_below="@+id/textView9"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:textAlignment="gravity" />
 
         <EditText
@@ -58,49 +54,19 @@
             android:textColor="#FFFF"
         android:singleLine="true"
             android:background="@drawable/oneline"
-            android:layout_marginRight="15dp"
             android:gravity="center_vertical"
             android:textAlignment="gravity"
             android:layout_below="@+id/etAggLocDes"
             android:layout_alignStart="@+id/etAggLocDes" />
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/ivAggPic1"
-        android:background="@drawable/photoboarder"
-        android:layout_below="@+id/etAggURL"
-        android:layout_alignStart="@+id/btnAgg"
-        android:layout_marginTop="15dp" />
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/ivAggPic3"
-        android:background="@drawable/photoboarder"
-        android:layout_marginLeft="15dp"
-        android:layout_above="@+id/btnAgg"
-        android:layout_alignEnd="@+id/etAggURL" />
-
         <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="35dp"
-        android:id="@+id/ibAggMap"
-        android:background="@drawable/map"
-            android:layout_above="@+id/ivAggPic1"
-            android:layout_alignEnd="@+id/etAggLocDes"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="3dp" />
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/ivAggPic2"
-        android:background="@drawable/photoboarder"
-        android:layout_marginLeft="15dp"
-        android:layout_above="@+id/btnAgg"
-        android:layout_centerHorizontal="true" />
-
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:id="@+id/ibAggMap"
+            android:background="@drawable/map"
+            android:layout_above="@+id/etAggURL"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="2dp" />
         <EditText
             android:layout_width="241dp"
             android:layout_height="45dp"
@@ -110,10 +76,39 @@
             android:singleLine="true"
             android:background="@drawable/oneline"
             android:layout_below="@+id/etAgg"
-            android:layout_alignEnd="@+id/btnAgg"
             android:gravity="center_vertical"
             android:textAlignment="gravity"
-            android:layout_alignStart="@+id/etAgg" />
+            android:layout_alignStart="@+id/etAgg"
+            android:layout_alignEnd="@+id/etAgg" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout2"
+            android:layout_alignEnd="@+id/ibAggMap"
+            android:layout_below="@+id/etAggURL"
+            android:layout_marginTop="15dp">
+              <ImageView
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:id="@+id/ivAggPic1"
+                  android:background="@drawable/newboarderofphoto" />
+              <ImageView
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:id="@+id/ivAggPic2"
+                  android:background="@drawable/newboarderofphoto"
+                  android:layout_marginLeft="5dp" />
+              <ImageView
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:id="@+id/ivAggPic3"
+                  android:background="@drawable/newboarderofphoto"
+                  android:layout_marginLeft="5dp" />
+        </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
@@ -126,10 +121,10 @@
             android:clickable="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_below="@+id/ivAggPic1"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_marginTop="20dp" />
 
     </RelativeLayout>
 </ScrollView>

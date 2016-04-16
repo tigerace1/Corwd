@@ -2,15 +2,20 @@ package com.example.chengen.crowdsafes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,20 +45,18 @@ import java.security.cert.CertificateFactory;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
-public class Aggression extends Fragment implements View.OnClickListener{
-    private EditText reportDescription,locationDes,videoURL;
-    static private ImageView Image1,Image2,Image3;
-    static private String target;
-    private byte[] photoByte1,photoByte2,photoByte3;
+public class Aggression extends Fragment implements View.OnClickListener {
+    private EditText reportDescription,locationDes, videoURL;
+    private ImageView Image1, Image2, Image3;
+    private static String target;
+    private static Bitmap pictureOne, pictureTwo, pictureThree;
+    private String photoByte1, photoByte2, photoByte3;
     private Button send;
-    static private boolean isSend;
-    static private Bitmap pictureOne;
-    static private Bitmap pictureTwo;
-    static private Bitmap pictureThree;
+    private boolean isSend;
     private final String USER_AGENT = "Mozilla/5.0";
-    private final static String Url = "https://www.crowdsafes.com/androidTest";
+    private final static String Url = "https://www.crowdsafes.com/reportAggression";
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.activity_aggression, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -64,34 +67,50 @@ public class Aggression extends Fragment implements View.OnClickListener{
         locationDes = (EditText) v.findViewById(R.id.etAggLocDes);
         videoURL = (EditText) v.findViewById(R.id.etAggURL);
         send = (Button) v.findViewById(R.id.btnAgg);
-        send.setClickable(true);
         ImageButton missMap = (ImageButton) v.findViewById(R.id.ibAggMap);
         missMap.bringToFront();
-        target="";
         send.setOnClickListener(this);
         missMap.setOnClickListener(this);
         Image1.setOnClickListener(this);
         Image2.setOnClickListener(this);
         Image3.setOnClickListener(this);
-        reportDescription.setScrollbarFadingEnabled(true);
-        reportDescription.setHint("Describe the sutiation");
+        setHints();
+        getData();
+        return v;
+    }
+    private void getData(){
+        SharedPreferences sharedPref =getActivity().getSharedPreferences("aggression", Context.MODE_PRIVATE);
+        if (sharedPref.contains("reortdes")) {
+            reportDescription.setText(sharedPref.getString("reportdes", ""));
+            locationDes.setText(sharedPref.getString("locationdes", ""));
+            videoURL.setText(sharedPref.getString("videoURL", ""));
+            target = sharedPref.getString("target", "");
+        }
+        if(sharedPref.contains("imageone"))
+            Image1.setImageDrawable(new BitmapDrawable(getResources(), stringToBitMap(sharedPref.getString("imageone",""))));
+        if(sharedPref.contains("imagetwo"))
+            Image2.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(sharedPref.getString("imagetwo",""))));
+        if(sharedPref.contains("imageothree"))
+            Image3.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(sharedPref.getString("imagethree",""))));
+    }
+    private void setHints (){
+        target="";
+        reportDescription.setHint("Describe the situation");
         locationDes.setHint("Describe your location");
         videoURL.setHint("Attach your video's url here");
         reportDescription.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
         locationDes.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
         videoURL.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
-        return v;
+        reportDescription.setScrollbarFadingEnabled(true);
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnAgg:
-                send.setScaleX(send.getScaleX()/0.9f);
-                send.setScaleY(send.getScaleY()/0.9f);
                 OnSendButtonPress();
                 break;
             case R.id.ivAggPic1:
-                PopupMenu popup1 = new PopupMenu(getActivity(),Image1);
+                PopupMenu popup1 = new PopupMenu(getActivity(), Image1);
                 popup1.getMenuInflater().inflate(R.menu.popup_menu, popup1.getMenu());
                 popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
@@ -103,13 +122,12 @@ public class Aggression extends Fragment implements View.OnClickListener{
                         } else if (item.getTitle().equals("Take a photo")) {
                             intentOne = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(intentOne, 0);
-                        } else if(item.getTitle().equals("Delete")){
-                            if(Image1.getDrawable()==null){
-                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
-                            }else
-                            if(Image1.getDrawable().getMinimumWidth()==0){
-                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
-                            }else {
+                        } else if (item.getTitle().equals("Delete")) {
+                            if (Image1.getDrawable() == null) {
+                                Toast.makeText(getActivity(), "No picture to delete", Toast.LENGTH_SHORT).show();
+                            } else if (Image1.getDrawable().getMinimumWidth() == 0) {
+                                Toast.makeText(getActivity(), "No picture to delete", Toast.LENGTH_SHORT).show();
+                            } else {
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
                                 builder1.setCancelable(false);
                                 builder1.setMessage("Do you want to Delete this photo?");
@@ -148,13 +166,12 @@ public class Aggression extends Fragment implements View.OnClickListener{
                         } else if (item.getTitle().equals("Take a photo")) {
                             intentTwo = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(intentTwo, 1);
-                        } else if(item.getTitle().equals("Delete")) {
-                            if(Image2.getDrawable()==null){
-                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
-                            }else
-                            if (Image2.getDrawable().getMinimumWidth()==0) {
-                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
-                            }else {
+                        } else if (item.getTitle().equals("Delete")) {
+                            if (Image2.getDrawable() == null) {
+                                Toast.makeText(getActivity(), "No picture to delete", Toast.LENGTH_SHORT).show();
+                            } else if (Image2.getDrawable().getMinimumWidth() == 0) {
+                                Toast.makeText(getActivity(), "No picture to delete", Toast.LENGTH_SHORT).show();
+                            } else {
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
                                 builder1.setCancelable(false);
                                 builder1.setMessage("Do you want to Delete this photo?");
@@ -193,13 +210,12 @@ public class Aggression extends Fragment implements View.OnClickListener{
                         } else if (item.getTitle().equals("Take a photo")) {
                             intentThree = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(intentThree, 2);
-                        } else if(item.getTitle().equals("Delete")) {
-                            if(Image3.getDrawable()==null){
-                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
-                            }else
-                            if (Image3.getDrawable().getMinimumWidth()==0) {
-                                Toast.makeText(getActivity(),"No picture to delete",Toast.LENGTH_SHORT).show();
-                            } else {
+                        } else if (item.getTitle().equals("Delete")) {
+                            if (Image3.getDrawable() == null) {
+                                Toast.makeText(getActivity(), "No picture to delete", Toast.LENGTH_SHORT).show();
+                            } else if (Image3.getDrawable().getMinimumWidth() == 0) {
+                                Toast.makeText(getActivity(), "No picture to delete", Toast.LENGTH_SHORT).show();
+                            }else {
                                 AlertDialog.Builder builder3 = new AlertDialog.Builder(getActivity());
                                 builder3.setCancelable(false);
                                 builder3.setMessage("Do you want to Delete this photo?");
@@ -226,33 +242,41 @@ public class Aggression extends Fragment implements View.OnClickListener{
                 popup3.show();
                 break;
             case R.id.ibAggMap:
-                Intent map = new Intent(getActivity(),MapsActivity.class);
+                Intent map = new Intent(getContext(), MapsActivity.class);
+                map.putExtra("type",1);
                 startActivity(map);
+                break;
         }
     }
     private void OnSendButtonPress(){
         send.setClickable(false);
         if (Image1.getDrawable() != null && Image1.getDrawable().getMinimumWidth() != 0) {
-            Bitmap image1 = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
-            photoByte1 = bitMapToString(image1);
+            photoByte1 = bitMapToString(pictureOne);
+            pictureOne.recycle();
         }
         if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
-            Bitmap image2 = ((BitmapDrawable) Image2.getDrawable()).getBitmap();
-            photoByte2 = bitMapToString(image2);
+            photoByte2 = bitMapToString(pictureTwo);
+            pictureTwo.recycle();
         }
         if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
-            Bitmap image3 = ((BitmapDrawable) Image3.getDrawable()).getBitmap();
-            photoByte3 = bitMapToString(image3);
+            photoByte3 = bitMapToString(pictureThree);
+            pictureThree.recycle();
         }
-        target = MapsActivity.getTarget();
+        SharedPreferences sharedPref =getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
+        if (sharedPref.contains("aggressionLoc"))
+            target = sharedPref.getString("aggressionLoc","");
+        SharedPreferences preferences = getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
         Thread t = new Thread() {
             @Override
             public void run() {
                 super.run();
                 try {
                     upLoadToDB(reportDescription.getText().toString(),
-                            photoByte1,photoByte2,photoByte3,videoURL.getText().toString(),
-                            target, locationDes.getText().toString());
+                              photoByte1, photoByte2, photoByte3,
+                            videoURL.getText().toString(), target, locationDes.getText().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -267,6 +291,19 @@ public class Aggression extends Fragment implements View.OnClickListener{
         if (!isSend) {
             send.setClickable(true);
             Toast.makeText(getActivity(), "Upload failed", Toast.LENGTH_LONG).show();
+        }else {
+            reportDescription.setText("");
+            locationDes.setText("");
+            videoURL.setText("");
+            Image1.setBackground(null);
+            Image2.setBackground(null);
+            Image3.setBackground(null);
+            if(pictureOne!=null)
+                pictureOne.recycle();
+            if(pictureTwo!=null)
+                pictureTwo.recycle();
+            if(pictureThree!=null)
+                pictureThree.recycle();
         }
     }
     @Override
@@ -274,26 +311,30 @@ public class Aggression extends Fragment implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         getActivity();
         if (resultCode == Activity.RESULT_OK) {
-            switch(requestCode){
+            switch (requestCode) {
                 case 0:
                     pictureOne = (Bitmap) data.getExtras().get("data");
-                    Image1.setImageBitmap(Bitmap.createScaledBitmap(pictureOne, 100, 100, false));
+                    Image1.setImageDrawable(new BitmapDrawable(getResources(),
+                            Bitmap.createScaledBitmap(pictureOne,Image1.getWidth(),Image1.getHeight(),false)));
                     break;
                 case 1:
                     pictureTwo = (Bitmap) data.getExtras().get("data");
-                    Image2.setImageBitmap(Bitmap.createScaledBitmap(pictureTwo, 100, 100, false));
+                    Image2.setImageDrawable(new BitmapDrawable(getResources(),
+                            Bitmap.createScaledBitmap(pictureTwo,Image2.getWidth(),Image2.getHeight(),false)));
                     break;
                 case 2:
                     pictureThree = (Bitmap) data.getExtras().get("data");
-                    Image3.setImageBitmap(Bitmap.createScaledBitmap(pictureThree, 100, 100, false));
+                    Image3.setImageDrawable(new BitmapDrawable(getResources(),
+                            Bitmap.createScaledBitmap(pictureThree,Image3.getWidth(),Image3.getHeight(),false)));
                     break;
                 case 7:
                     Uri selectedImage1 = data.getData();
                     getActivity().getContentResolver().notifyChange(selectedImage1, null);
-                    try{
+                    try {
                         pictureOne = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage1);
-                        Image1.setImageBitmap(Bitmap.createScaledBitmap(pictureOne, 100, 100, true));
-                    }catch(IOException e){
+                        Image1.setImageDrawable(new BitmapDrawable(getResources(),
+                                Bitmap.createScaledBitmap(pictureOne,Image1.getWidth(),Image1.getHeight(),false)));
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
@@ -302,34 +343,34 @@ public class Aggression extends Fragment implements View.OnClickListener{
                     getActivity().getContentResolver().notifyChange(selectedImage2, null);
                     try {
                         pictureTwo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage2);
-                        Image2.setImageBitmap(Bitmap.createScaledBitmap(pictureTwo, 100, 100, true));
-                    }catch(IOException e){
+                        Image2.setImageDrawable(new BitmapDrawable(getResources(),
+                                Bitmap.createScaledBitmap(pictureTwo,Image2.getWidth(),Image2.getHeight(),false)));
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
                 case 9:
                     Uri seletedImage3 = data.getData();
                     getActivity().getContentResolver().notifyChange(seletedImage3, null);
-                    try{
+                    try {
                         pictureThree = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), seletedImage3);
-                        Image3.setImageBitmap(Bitmap.createScaledBitmap(pictureThree, 100, 100, true));
-                    }catch(IOException e){
+                        Image3.setImageDrawable(new BitmapDrawable(getResources(),
+                                Bitmap.createScaledBitmap(pictureThree,Image3.getWidth(),Image3.getHeight(),false)));
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
             }
         }
     }
-    private byte[] bitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
-    }
     private void upLoadToDB(String reportDescription,
-        byte[] photo,byte[] photo2, byte[] photo3, String video,String location,String locDes){
-        String string = "type=Aggression"+"&reportDescription="+reportDescription+
-                "&photo1="+photo+"&photo2="+photo2+"&photo3="+photo3;
-        isSend=true;
+                            String photo1,String photo2, String photo3, String video,
+                            String location, String locDes) {
+
+        String string = "&txtField2=" + reportDescription +
+                "&fileUpload=" + photo1 + "&photo2=" + photo2 +
+                "&photo3=" + photo3+"&location="+location+"&reward=";
+        isSend = true;
         try {
             InputStream is = new BufferedInputStream(getActivity().getAssets().open("dst_root_ca_x3.pem"));
             Certificate ca = CertificateFactory.getInstance("X.509").generateCertificate(is);
@@ -350,12 +391,13 @@ public class Aggression extends Fragment implements View.OnClickListener{
             in.close();
             sendGet();
             sendPost(string);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            isSend=false;
+            isSend = false;
         }
     }
-    private void sendGet(){
+
+    private void sendGet() {
         try {
             URL obj = new URL(Url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -368,12 +410,13 @@ public class Aggression extends Fragment implements View.OnClickListener{
                 response.append(inputLine);
             }
             in.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            isSend=false;
+            isSend = false;
         }
     }
-    private void sendPost(String urlParameters){
+
+    private void sendPost(String urlParameters) {
         try {
             URL obj = new URL(Url);
             HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
@@ -393,12 +436,74 @@ public class Aggression extends Fragment implements View.OnClickListener{
             }
             in.close();
             if (response.toString() != null) {
-                Intent succeed = new Intent(getActivity(),Thankyou.class);
+                Intent succeed = new Intent(getActivity(), Thankyou.class);
                 startActivity(succeed);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            isSend=false;
+            isSend = false;
         }
     }
+    private String bitMapToString(Bitmap bitmap){
+        System.gc();
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte [] b=baos.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+    public Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte=Base64.decode(encodedString,Base64.URL_SAFE);
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
+    public BitmapDrawable resizeBitmap(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int newWidth = 100;
+        int newHeight = 100;
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+                width, height, matrix, true);
+        return new BitmapDrawable(getResources(),resizedBitmap);
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        Thread t = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("aggression", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("reportdes", reportDescription.getText().toString());
+                editor.putString("locationdes", locationDes.getText().toString());
+                editor.putString("videoURL", videoURL.getText().toString());
+                editor.putString("target",target+"");
+                if(pictureOne!=null)
+                    editor.putString("imageone",bitMapToString(pictureOne));
+                if(pictureTwo!=null)
+                    editor.putString("imagetwo",bitMapToString(pictureTwo));
+                if(pictureThree!=null)
+                    editor.putString("imagethree",bitMapToString(pictureThree));
+                editor.apply();
+            }
+        };
+        t.start();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SharedPreferences preferences = getActivity().getSharedPreferences("aggression", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+    }
 }
+

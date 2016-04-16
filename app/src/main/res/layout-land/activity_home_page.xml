@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2e2e2e"
+    android:background="#303030"
     android:padding="10dp"
-    android:visibility="visible"
     tools:context="com.example.chengen.crowdsafes.HomePage">
 
     <LinearLayout
@@ -17,7 +16,7 @@
         android:layout_marginTop="71dp"
         android:dividerPadding="10dp"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="6">
 
         <ImageButton
             android:id="@+id/ibAgg"
@@ -45,16 +44,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:visibility="visible" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/linearLayout"
-        android:layout_below="@+id/linearLayout"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal"
-        android:weightSum="3">
 
         <ImageButton
             android:id="@+id/ibSusp"
@@ -78,15 +68,14 @@
             android:background="@drawable/btn_san"
             android:visibility="visible" />
     </LinearLayout>
-
     <ImageView
         android:id="@+id/ivTitle"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="55dp"
-        android:layout_marginRight="55dp"
+        android:layout_marginLeft="140dp"
+        android:layout_marginRight="140dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/crowdsafelogo"
         android:visibility="visible" />
