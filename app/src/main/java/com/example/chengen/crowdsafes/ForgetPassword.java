@@ -2,14 +2,11 @@ package com.example.chengen.crowdsafes;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -28,96 +25,50 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
-public class SignUpPage extends AppCompatActivity implements View.OnClickListener{
-    private EditText firstName,lastName,email,password,repassword;
-    private Button signup;
-    private final String USER_AGENT = "Mozilla/5.0";
-    private final static String Url = "https://www.crowdsafes.com/signup";
+public class ForgetPassword extends AppCompatActivity {
+    private EditText forgetET;
+    private Button forgetBTN;
     private boolean isSend;
+    private final String USER_AGENT = "Mozilla/5.0";
+    private final static String Url = "https://www.crowdsafes.com/forgotPassword";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up_page);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        firstName = (EditText)findViewById(R.id.etFirstName);
-        lastName = (EditText)findViewById(R.id.etLastName);
-        email = (EditText)findViewById(R.id.etEmail);
-        password = (EditText)findViewById(R.id.etSignUpPass);
-        repassword = (EditText)findViewById(R.id.etSignUpRePass);
-        signup = (Button)findViewById(R.id.btnSignUp);
-        TextView signIn = (TextView) findViewById(R.id.tvSignIn);
-        signIn.setOnClickListener(this);
-        signup.setOnClickListener(this);
-        firstName.setHint("First Name");
-        lastName.setHint("Last Name");
-        email.setHint("Email");
-        password.setHint("Password");
-        repassword.setHint("Retype your password");
-        firstName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.c));
-        lastName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.c));
-        email.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.c));
-        password.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.c));
-        repassword.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.c));
-    }
-    @Override
-    public void onClick(View v) {
-        if(v.getId()==R.id.btnSignUp){
-            signup.setClickable(false);
-            String pass = password.getText().toString();
-            String repass = repassword.getText().toString();
-            if (firstName.getText().toString().equals("")) {
-                firstName.setHint("Enter your first name");
-                firstName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.checkboxOn));
-                signup.setClickable(true);
-            } else if (lastName.getText().toString().equals("")) {
-                lastName.setHint("Enter your last name");
-                lastName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.checkboxOn));
-                signup.setClickable(true);
-            } else if (email.getText().toString().equals("")) {
-                email.setHint("Enter your email");
-                email.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.checkboxOn));
-                signup.setClickable(true);
-            } else if(pass.equals("")||repass.equals("")){
-                Toast.makeText(getApplication(), "Both passwords cannot be empty!", Toast.LENGTH_LONG).show();
-            }else if (!pass.equals(repass)) {
-                Toast.makeText(getApplication(), "The passwords is not match!", Toast.LENGTH_LONG).show();
-                password.selectAll();
-                repassword.selectAll();
-                signup.setClickable(true);
-            } else {
-                Thread t = new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        upLoadToDB(firstName.getText().toString(), lastName.getText().toString(),
-                                email.getText().toString(), password.getText().toString());
+        setContentView(R.layout.activity_forget_password);
+        forgetET  = (EditText)findViewById(R.id.etforgetPass);
+        forgetBTN = (Button)findViewById(R.id.btnForgetPass);
+        forgetBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(forgetET.getText().toString().equals("")){
+                    Toast.makeText(ForgetPassword.this,"Type in your email please",Toast.LENGTH_LONG).show();
+                }else {
+                    Thread t = new Thread(){
+                        @Override
+                        public void run() {
+                            super.run();
+                            upLoadToDB(forgetET.getText().toString());
+                        }
+                    };
+                    t.start();
+                    try {
+                        t.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                };
-                t.start();
-                try {
-                    t.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (!isSend) {
-                    signup.setClickable(true);
-                    Toast.makeText(getApplication(), "Sign up failed", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplication(), "Sign up success", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(this,LoginPage.class));
+                    if (!isSend) {
+                        forgetBTN.setClickable(true);
+                        Toast.makeText(getApplication(), "Reset failed", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplication(), "Reset success", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(ForgetPassword.this,LoginPage.class));
+                    }
                 }
             }
-        }else if(v.getId()==R.id.tvSignIn){
-            startActivity(new Intent(this,LoginPage.class));
-        }
+        });
     }
-    private void upLoadToDB(String first, String last, String email,
-                            String password){
-        String string = "firstName="+first+"&lastName="+last+
-                "&username="+email+"&password="+password;
+    private void upLoadToDB(String email){
+        String string = "email="+email;
         isSend=true;
         try {
             InputStream is = new BufferedInputStream(getAssets().open("dst_root_ca_x3.pem"));

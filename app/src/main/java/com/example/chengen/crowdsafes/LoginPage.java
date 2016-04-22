@@ -69,9 +69,12 @@ public class LoginPage extends AppCompatActivity implements View.OnClickListener
                 login();
                 break;
             case R.id.tvforget:
+                startActivity(new Intent(LoginPage.this,ForgetPassword.class));
+                finish();
                 break;
             case R.id.tvsignup:
                 startActivity(new Intent(LoginPage.this,SignUpPage.class));
+                finish();
                 break;
         }
     }
@@ -189,7 +192,10 @@ public class LoginPage extends AppCompatActivity implements View.OnClickListener
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
         System.exit(0);
     }

@@ -2,6 +2,7 @@ package com.example.chengen.crowdsafes;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,7 @@ public class SwipeAdapter extends PagerAdapter {
         layoutInflater=(LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View item_view = layoutInflater.inflate(R.layout.swipe_layout,container,false);
         ImageView imageView = (ImageView)item_view.findViewById(R.id.ivBigPicture);
-        imageView.setImageBitmap(imageForShowing.get(position));
+        imageView.setImageDrawable(new BitmapDrawable(imageForShowing.get(position)));
         container.addView(item_view);
         return item_view;
     }

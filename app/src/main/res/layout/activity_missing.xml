@@ -20,21 +20,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:text="Missing"
-                android:textColor="#fea867"
-                android:textSize="22sp" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp">
 
                 <ToggleButton
                     android:id="@+id/tbLost"
@@ -104,7 +93,7 @@
 
             <EditText
                 android:id="@+id/etNumber"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/oneline"
@@ -115,7 +104,7 @@
 
             <EditText
                 android:id="@+id/etRespond"
-                android:layout_width="wrap_content"
+                android:layout_width="401dp"
                 android:layout_height="45dp"
                 android:layout_alignEnd="@+id/etNumber"
                 android:background="@drawable/oneline"
@@ -129,23 +118,24 @@
 
                 <ImageButton
                     android:id="@+id/ibMissMap"
-                    android:layout_width="50dp"
+                    android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_alignBottom="@+id/etMissLocDes"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginBottom="3dp"
-                    android:background="@drawable/map" />
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/marker" />
 
                 <EditText
                     android:id="@+id/etMissLocDes"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
                     android:background="@drawable/oneline"
                     android:singleLine="true"
                     android:textColor="#FFF"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignEnd="@+id/ibMissMap" />
 
                 <EditText
                     android:id="@+id/etMissURL"
@@ -204,7 +194,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/ripple_effect"
                 android:clickable="true"
-                android:text="Send"
+                android:text="Submit"
                 android:textAlignment="center"
                 android:textColor="#FFFF"
                 android:textSize="22sp" />

@@ -10,7 +10,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/nav_title"
         android:textSize="22dp"
-        android:textColor="#3eef1b"
+        android:textColor="#80429f"
         android:layout_marginLeft="15dp"
         android:textStyle="normal"
         android:layout_alignParentBottom="true"

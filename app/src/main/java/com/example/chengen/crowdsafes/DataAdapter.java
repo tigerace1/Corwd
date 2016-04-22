@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataAdapter extends ArrayAdapter {
+public class DataAdapter extends ArrayAdapter implements Filterable {
     List adapterList = new ArrayList();
     public DataAdapter(Context context, int resource) {
         super(context, resource);
@@ -107,9 +109,9 @@ public class DataAdapter extends ArrayAdapter {
         handler.reportDescription.setText(provider.getSituationData());
         handler.locationDes.setText(provider.getLocationDesData());
         handler.location.setText(provider.getLocationData());
-        handler.ImageOne.setImageDrawable(new BitmapDrawable(getContext().getResources(), provider.getImagesData1()));
-        handler.ImageTwo.setImageDrawable(new BitmapDrawable(getContext().getResources(), provider.getImagesData2()));
-        handler.ImageThree.setImageDrawable(new BitmapDrawable(getContext().getResources(), provider.getImagesData3()));
+        handler.ImageOne.setImageDrawable(new BitmapDrawable(getContext().getResources(),provider.getImagesData1()));
+        handler.ImageTwo.setImageDrawable(new BitmapDrawable(getContext().getResources(),provider.getImagesData2()));
+        handler.ImageThree.setImageDrawable(new BitmapDrawable(getContext().getResources(),provider.getImagesData3()));
         handler.responseTo.setText(provider.getResponseTo());
         handler.contact.setText(provider.getContact());
         handler.reportType.setText(provider.getReportType());
@@ -118,5 +120,11 @@ public class DataAdapter extends ArrayAdapter {
             handler.videoIcon.setBackgroundColor(Color.WHITE);
         handler.videoURL.setText(provider.getVideoData());
         return row;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return super.getFilter();
+
     }
 }

@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -310,23 +309,42 @@ public class Missing extends Fragment implements View.OnClickListener {
     }
     private void OnSendButtonPress(){
         send.setClickable(false);
+        Thread t1 = null,t2 = null,t3 = null;
         if (Image1.getDrawable() != null && Image1.getDrawable().getMinimumWidth() != 0) {
             name1 = Calendar.getInstance().get(Calendar.MILLISECOND)+
                     ""+Calendar.getInstance().get(Calendar.DATE)+""+Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH);
-            new UploadImage(pictureOne, name1).execute();
-            pictureOne.recycle();
+            t1 = new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+                    uploadImage(Bitmap.createScaledBitmap(pictureOne,200,200,false), "abcd");
+                }
+            };
+            t1.start();
         }
         if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
             name2 = Calendar.getInstance().get(Calendar.MILLISECOND)+
                     ""+Calendar.getInstance().get(Calendar.DATE)+""+Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH);
-            new UploadImage(pictureTwo, name2).execute();
-            pictureTwo.recycle();
+            t2 = new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+                    uploadImage(Bitmap.createScaledBitmap(pictureTwo,200,200,false), "dcba");
+                }
+            };
+            t2.start();
         }
         if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
             name3 = Calendar.getInstance().get(Calendar.MILLISECOND)+
                     ""+Calendar.getInstance().get(Calendar.DATE)+""+Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH);
-            new UploadImage(pictureThree, name3).execute();
-            pictureThree.recycle();
+            t3 = new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+                    uploadImage(Bitmap.createScaledBitmap(pictureThree,200,200,false), "oooo");
+                }
+            };
+            t3.start();
         }
         SharedPreferences sharedPref =getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
         if (sharedPref.contains("mssingLoc"))
@@ -350,6 +368,12 @@ public class Missing extends Fragment implements View.OnClickListener {
         };
         t.start();
         try {
+            if(t1!=null)
+               t1.join();
+            if(t2!=null)
+               t2.join();
+            if(t3!=null)
+               t3.join();
             t.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -374,6 +398,9 @@ public class Missing extends Fragment implements View.OnClickListener {
                pictureTwo.recycle();
             if(pictureThree!=null)
                pictureThree.recycle();
+            pictureOne=null;
+            pictureTwo=null;
+            pictureThree=null;
             find.setChecked(false);
             lost.setChecked(false);
         }
@@ -458,7 +485,7 @@ public class Missing extends Fragment implements View.OnClickListener {
                             String location, String locDes,String rewards) {
 
         String string = "txtField1="+missingType + "&txtField2=" + reportDescription +"&txtField3="+contact+
-                "&fileUpload=" + photo1 + "&photo2=" + photo2 +
+                "&photovdo1=" + photo1 + "&photo2=" + photo2 +
                 "&photo3=" + photo3+"&location="+location+"&reward="+rewards;
         isSend = true;
         try {
@@ -534,6 +561,29 @@ public class Missing extends Fragment implements View.OnClickListener {
             isSend = false;
         }
     }
+    private synchronized void uploadImage(Bitmap image, String name) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+        ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+        dataToSend.add(new BasicNameValuePair("image", encodedImage));
+        dataToSend.add(new BasicNameValuePair("name", name));
+        HttpParams httpParams = getHttpRequestParams();
+        HttpClient client = new DefaultHttpClient(httpParams);
+        HttpPost post = new HttpPost(SERVER_ADDRESS + "SavePicture.php");
+        try {
+            post.setEntity(new UrlEncodedFormEntity(dataToSend));
+            client.execute(post);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private HttpParams getHttpRequestParams(){
+        HttpParams httpRequestParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpRequestParams, 1000 * 30);
+        HttpConnectionParams.setSoTimeout(httpRequestParams, 1000 * 30);
+        return httpRequestParams;
+    }
     @Override
     public void onPause() {
         super.onPause();
@@ -550,18 +600,26 @@ public class Missing extends Fragment implements View.OnClickListener {
                 editor.putString("locationdes", locationDes.getText().toString());
                 editor.putString("videoURL", videoURL.getText().toString());
                 editor.putString("reward",reward.getText().toString());
-                editor.putString("target",target+"");
-                editor.putString("reporttype",reportType+"");
+                editor.putString("target", target + "");
+                editor.putString("reporttype", reportType + "");
                 if(pictureOne!=null)
                     editor.putString("imageone",bitMapToString(pictureOne));
                 if(pictureTwo!=null)
-                    editor.putString("imagetwo",bitMapToString(pictureTwo));
+                    editor.putString("imageone",bitMapToString(pictureTwo));
                 if(pictureThree!=null)
-                    editor.putString("imagethree",bitMapToString(pictureThree));
+                    editor.putString("imageone",bitMapToString(pictureThree));
                 editor.apply();
             }
         };
         t.start();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SharedPreferences preferences = getActivity().getSharedPreferences("missing", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
     }
     private String bitMapToString(Bitmap bitmap){
         System.gc();
@@ -578,54 +636,6 @@ public class Missing extends Fragment implements View.OnClickListener {
             e.getMessage();
             return null;
         }
-    }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        SharedPreferences preferences = getActivity().getSharedPreferences("missing", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.commit();
-    }
-    private class UploadImage extends AsyncTask<Void, Void, Void> {
-        Bitmap image;
-        String name;
-        public UploadImage(Bitmap image,String name)
-        {
-            this.image=image;
-            this.name = name;
-        }
-        @Override
-        protected Void doInBackground(Void... params){
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
-            String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
-            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
-            dataToSend.add(new BasicNameValuePair("image",encodedImage));
-            dataToSend.add(new BasicNameValuePair("name",name));
-            HttpParams httpParams = getHttpRequestParams();
-            HttpClient client = new DefaultHttpClient(httpParams);
-            HttpPost post = new HttpPost(SERVER_ADDRESS+"SavePicture.php");
-            try{
-                post.setEntity(new UrlEncodedFormEntity(dataToSend));
-                client.execute(post);
-            }catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Toast.makeText(getActivity().getApplicationContext(),"Image Uploaded",Toast.LENGTH_SHORT).show();
-        }
-    }
-    private HttpParams getHttpRequestParams(){
-        HttpParams httpRequestParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpRequestParams, 1000 * 30);
-        HttpConnectionParams.setSoTimeout(httpRequestParams, 1000 * 30);
-        return httpRequestParams;
     }
 }
 

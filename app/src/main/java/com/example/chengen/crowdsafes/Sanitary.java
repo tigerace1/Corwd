@@ -489,9 +489,6 @@ public class Sanitary extends Fragment implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         SharedPreferences preferences = getActivity().getSharedPreferences("sanitary", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.commit();
     }
 }
 

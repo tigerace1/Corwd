@@ -4,7 +4,7 @@
     android:interpolator="@android:anim/bounce_interpolator"
     android:repeatMode="restart">
     <translate
-        android:fromYDelta="-22%"
+        android:fromYDelta="-5%"
         android:toYDelta="0"
-        android:duration="1800"/>
+        android:duration="500"/>
 </set>

@@ -12,7 +12,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
           <EditText
-              android:layout_width="wrap_content"
+              android:layout_width="fill_parent"
               android:layout_height="45dp"
               android:id="@+id/etFirstName"
               android:textColor="#FFFF"
@@ -20,9 +20,8 @@
               android:textSize="18sp"
               android:gravity="center_vertical|start"
               android:background="@drawable/twolines"
-              android:layout_below="@+id/textView20"
               android:layout_centerHorizontal="true"
-              android:layout_marginTop="20dp"
+              android:layout_marginTop="35dp"
               android:layout_marginLeft="15dp"
               android:layout_marginRight="15dp"
               android:textAlignment="gravity" />
@@ -59,7 +58,7 @@
               android:textAlignment="gravity" />
 
           <EditText
-             android:layout_width="wrap_content"
+             android:layout_width="match_parent"
              android:layout_height="45dp"
              android:inputType="textPassword"
              android:ems="10"
@@ -76,7 +75,7 @@
              android:layout_alignParentEnd="true" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="45dp"
         android:inputType="textPassword"
         android:ems="10"
@@ -115,29 +114,8 @@
               android:textColor="#FFFF"
               android:textSize="18sp"
               android:layout_below="@+id/btnSignUp"
-              android:layout_alignEnd="@+id/textView20"
               android:layout_marginTop="10dp"
               android:layout_marginBottom="10dp" />
-          <com.facebook.login.widget.LoginButton
-              android:id="@+id/login_button"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center_horizontal"
-              android:layout_marginTop="30dp"
-              android:layout_alignStart="@+id/btnSignUp"
-              android:layout_alignEnd="@+id/btnSignUp" />
-
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="OR"
-              android:id="@+id/textView20"
-              android:layout_below="@+id/login_button"
-              android:layout_centerHorizontal="true"
-              android:layout_marginTop="20dp"
-              android:textColor="#FFFF"
-              android:textSize="22sp" />
 
           <TextView
               android:layout_width="wrap_content"

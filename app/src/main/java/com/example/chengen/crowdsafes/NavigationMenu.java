@@ -57,9 +57,9 @@ public class NavigationMenu extends AppCompatActivity {
         Bitmap about = BitmapFactory.decodeResource(getResources(),R.drawable.newin);
         Bitmap setting = BitmapFactory.decodeResource(getResources(),R.drawable.newsetting);
         listNavItems.add(new NavItem("Reports", home));
-        listNavItems.add(new NavItem("Reported lists",list));
+        listNavItems.add(new NavItem("Report list",list));
         listNavItems.add(new NavItem("Help", help));
-        listNavItems.add(new NavItem("About...",about));
+        listNavItems.add(new NavItem("About",about));
         listNavItems.add(new NavItem("Settings",setting));
         listFragments = new ArrayList<>();
         listFragments.add(new HomePage());

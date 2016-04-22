@@ -491,7 +491,7 @@ public class Suspicion extends Fragment implements View.OnClickListener {
         SharedPreferences preferences = getActivity().getSharedPreferences("suspicion", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 }
 

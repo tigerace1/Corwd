@@ -23,7 +23,8 @@ import java.util.List;
 public class Reports extends AppCompatActivity implements ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener,Parcelable{
     private ViewPager viewPager;
     private TabHost tabHost;
-    List<Fragment> fragmentList;
+    private  List<Fragment> fragmentList;
+    private android.support.v7.app.ActionBar actionBar;
     private static int i=0;
     public Reports(){}
     public static final Creator<Reports> CREATOR = new Creator<Reports>() {
@@ -41,7 +42,7 @@ public class Reports extends AppCompatActivity implements ViewPager.OnPageChange
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reports_layout);
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
@@ -100,12 +101,14 @@ public class Reports extends AppCompatActivity implements ViewPager.OnPageChange
         viewPager =(ViewPager)findViewById(R.id.viewpager);
         viewPager.setAdapter(framentPageAdapter);
         viewPager.setCurrentItem(i);
+        changeTitle(i);
         viewPager.setOnPageChangeListener(this);
     }
     @Override
     public void onTabChanged(String tabId) {
         int selectedItem = tabHost.getCurrentTab();
         viewPager.setCurrentItem(selectedItem);
+        changeTitle(selectedItem);
     }
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -159,6 +162,25 @@ public class Reports extends AppCompatActivity implements ViewPager.OnPageChange
             startActivity(new Intent(Reports.this,NavigationMenu.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("count",0));
             finish();
+    }
+    private void changeTitle(int page){
+        switch (page){
+            case 0:
+                actionBar.setTitle("Aggression");
+                break;
+            case 1:
+                actionBar.setTitle("Sanitary");
+                break;
+            case 2:
+                actionBar.setTitle("Missing");
+                break;
+            case 3:
+                actionBar.setTitle("Suspicion");
+                break;
+            case 4:
+                actionBar.setTitle("Medical");
+                break;
+        }
     }
 }
 
