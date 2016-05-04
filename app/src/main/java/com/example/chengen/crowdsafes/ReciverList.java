@@ -3,6 +3,7 @@ package com.example.chengen.crowdsafes;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,8 +11,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +41,7 @@ public class ReciverList extends Fragment implements ListView.OnItemClickListene
     private Bitmap Photo3;
     private JSONObject missData;
     private static ListView listview;
+    private TextView load;
     private final static String SERVER_ADDRESS = "http://crowdsafe.azurewebsites.net/";
     @Nullable
     @Override
@@ -46,31 +51,18 @@ public class ReciverList extends Fragment implements ListView.OnItemClickListene
         listview = (ListView) v.findViewById(R.id.reList);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
-        if (adapter != null)
+        load = (TextView)v.findViewById(R.id.tvLoading);
+        if (adapter != null) {
             listview.setAdapter(adapter);
-        else {
-            adapter = new DataAdapter(getActivity(), R.layout.activity_reciver);
-            Thread t = new Thread() {
-                @Override
-                public void run() {
-                    super.run();
-                    getMissDataFromDB();
-                }
-            };
-            t.start();
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            listview.setAdapter(adapter);
-            swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
-            swipeRefreshLayout.setOnRefreshListener(this);
-            listview.setOnItemClickListener(this);
+            load.setVisibility(View.GONE);
+        }else {
+            Animation animAlpha = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_text);
+            load.startAnimation(animAlpha);
+            new DownloadInfo().execute();
         }
+        listview.setOnItemClickListener(this);
         return v;
     }
-
     private void getMissDataFromDB() {
         try {
             InputStream is = new BufferedInputStream(getActivity().getAssets().open("cacerts.jks"));
@@ -102,8 +94,7 @@ public class ReciverList extends Fragment implements ListView.OnItemClickListene
                         public void run() {
                             super.run();
                             try {
-                                Photo1 = getImages("abcd");
-                                Photo1 = Bitmap.createScaledBitmap(Photo1,120,120,false);
+                                Photo1 = getImages("SmallOne");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -117,8 +108,7 @@ public class ReciverList extends Fragment implements ListView.OnItemClickListene
                         public void run() {
                             super.run();
                             try {
-                                Photo2 = getImages("dcba");
-                                Photo2 = Bitmap.createScaledBitmap(Photo2, 120, 120, false);
+                                Photo2 = getImages("SmallTwo");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -132,8 +122,7 @@ public class ReciverList extends Fragment implements ListView.OnItemClickListene
                         public void run() {
                             super.run();
                             try {
-                                Photo3 = getImages("oooo");
-                                Photo3 = Bitmap.createScaledBitmap(Photo3, 120, 120, false);
+                                Photo3 = getImages("SmallThree");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -145,13 +134,13 @@ public class ReciverList extends Fragment implements ListView.OnItemClickListene
                         , Photo2, Photo3, "l", missData.getString("location"),
                         missData.getString("reward"), missData.getString("contactperson"), missData.getString("time"),
                         missData.getString("reporttype"), "");
-                adapter.add(dataProvider);
                 if(t1!=null)
                     t1.join();
                 if(t2!=null)
                     t2.join();
                 if(t3!=null)
                     t3.join();
+                adapter.add(dataProvider);
             }
             in.close();
         } catch (Exception e) {
@@ -167,18 +156,7 @@ public class ReciverList extends Fragment implements ListView.OnItemClickListene
     @Override
     public void onRefresh() {
         adapter.clear();
-        Thread t2 = new Thread() {
-            @Override
-            public void run() {
-                getMissDataFromDB();
-            }
-        };
-        t2.start();
-        try {
-            t2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new DownloadInfo().execute();
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -228,6 +206,22 @@ public class ReciverList extends Fragment implements ListView.OnItemClickListene
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    private class DownloadInfo extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            adapter = new DataAdapter(getActivity(), R.layout.activity_reciver);
+            getMissDataFromDB();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            listview.setAdapter(adapter);
+            load.clearAnimation();
+            load.setVisibility(View.GONE);
         }
     }
 }

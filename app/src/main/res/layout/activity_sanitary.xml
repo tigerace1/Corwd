@@ -65,9 +65,7 @@
                 android:layout_alignStart="@+id/etSanURL"
                 android:layout_below="@+id/linearLayout3"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="35dp"
                 android:background="@drawable/ripple_effect"
                 android:text="Submit"
                 android:textAlignment="center"
@@ -114,7 +112,8 @@
                 android:layout_alignEnd="@+id/etSanURL"
                 android:layout_alignTop="@+id/etSanLocDes"
                 android:background="@drawable/marker"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp" />
 
         </RelativeLayout>
     </ScrollView>

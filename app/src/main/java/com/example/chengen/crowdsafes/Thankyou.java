@@ -12,6 +12,7 @@ public class Thankyou extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thankyou);
+        getSupportActionBar().hide();
         ImageButton home = (ImageButton)findViewById(R.id.ibHome);
         home.setOnClickListener(new View.OnClickListener() {
             @Override

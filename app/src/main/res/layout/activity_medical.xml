@@ -139,9 +139,7 @@
                 android:background="@drawable/ripple_effect"
                 android:textColor="#FFFF"
                 android:textSize="22sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="35dp"
                 android:layout_below="@+id/linearLayout4"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10dp" />

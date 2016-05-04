@@ -3,6 +3,7 @@ package com.example.chengen.crowdsafes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -14,9 +15,11 @@ public class ReciverPhoto extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reciver_photo);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.crowdsafelogo);
-        getSupportActionBar().setTitle("");
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setIcon(R.drawable.crowdsafelogo);
+        actionBar.setTitle("");
         TextView Title = (TextView)findViewById(R.id.tvTitle);
         TextView Description=(TextView)findViewById(R.id.tvReportDescription);
         TextView LocationDes = (TextView)findViewById(R.id.tvLocationDes);
@@ -64,12 +67,6 @@ public class ReciverPhoto extends AppCompatActivity implements View.OnClickListe
         }
     }
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(this, NavigationMenu.class).putExtra("count",1));
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ibPhotos:
@@ -89,5 +86,28 @@ public class ReciverPhoto extends AppCompatActivity implements View.OnClickListe
                startActivity(intent4);
                break;
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, NavigationMenu.class);
+                intent.putExtra("count",1);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, NavigationMenu.class);
+        intent.putExtra("count",1);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }

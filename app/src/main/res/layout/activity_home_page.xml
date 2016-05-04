@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2e2e2e"
+    android:background="#303030"
     android:visibility="visible"
     tools:context="com.example.chengen.crowdsafes.HomePage">
 
@@ -21,29 +21,29 @@
         <ImageButton
             android:id="@+id/ibAgg"
             android:layout_width="0dp"
+            android:background="@drawable/buttoneffect"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/btn_agg" />
+            android:src="@drawable/bigagg" />
+        <ImageButton
+            android:id="@+id/ibSan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="visible"
+            android:src="@drawable/bigsan"
+            android:background="@drawable/buttoneffect"/>
 
         <ImageButton
             android:id="@+id/ibMiss"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:background="@drawable/buttoneffect"
             android:layout_weight="1"
-            android:background="@drawable/btn_miss"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:visibility="visible" />
-
-        <ImageButton
-            android:id="@+id/ibMed"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/btn_med"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:src="@drawable/bigmiss" />
     </LinearLayout>
 
     <LinearLayout
@@ -60,22 +60,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/btn_susp" />
-
+            android:src="@drawable/bigsusp"
+            android:background="@drawable/buttoneffect"/>
+        <ImageButton
+            android:id="@+id/ibMed"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:background="@drawable/buttoneffect"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="visible"
+            android:src="@drawable/bigmed" />
         <ImageButton
             android:id="@+id/ibMap"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/btn_map" />
+            android:src="@drawable/bigmap"
+            android:background="@drawable/buttoneffect"/>
 
-        <ImageButton
-            android:id="@+id/ibSan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/btn_san"
-            android:visibility="visible" />
     </LinearLayout>
 
     <ImageView

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2e2e2e"
+    android:background="#303030"
     tools:context="com.example.chengen.crowdsafes.HomePage">
 
     <LinearLayout
@@ -15,68 +15,67 @@
         android:layout_marginTop="71dp"
         android:dividerPadding="10dp"
         android:orientation="horizontal"
-        android:weightSum="6"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp">
+        android:weightSum="6">
 
         <ImageButton
             android:id="@+id/ibAgg"
             android:layout_width="0dp"
+            android:background="@drawable/buttoneffect"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/new_btn_agg" />
-
-        <ImageButton
-            android:id="@+id/ibMiss"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/new_btn_miss"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:visibility="visible" />
-
-        <ImageButton
-            android:id="@+id/ibMed"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/new_btn_med"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:visibility="visible" />
-
-
-        <ImageButton
-            android:id="@+id/ibSusp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/new_btn_susp" />
-
-        <ImageButton
-            android:id="@+id/ibMap"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/new_btn_map" />
-
+            android:src="@drawable/smallagg" />
         <ImageButton
             android:id="@+id/ibSan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/new_btn_san"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:src="@drawable/smallsan"
+            android:background="@drawable/buttoneffect"/>
+        <ImageButton
+            android:id="@+id/ibMiss"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:background="@drawable/buttoneffect"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="visible"
+            android:src="@drawable/smallmiss" />
+        <ImageButton
+            android:id="@+id/ibSusp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/smallsusp"
+            android:background="@drawable/buttoneffect"/>
+        <ImageButton
+            android:id="@+id/ibMed"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:background="@drawable/buttoneffect"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="visible"
+            android:src="@drawable/smallmed" />
+        <ImageButton
+            android:id="@+id/ibMap"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/smallmap"
+            android:background="@drawable/buttoneffect"/>
     </LinearLayout>
+
     <ImageView
         android:id="@+id/ivTitle"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="180dp"
-        android:layout_marginRight="180dp"
+        android:layout_marginLeft="190dp"
+        android:layout_marginRight="190dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/crowdsafelogo"
         android:visibility="visible" />

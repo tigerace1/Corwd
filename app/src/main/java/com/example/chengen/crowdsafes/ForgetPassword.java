@@ -30,7 +30,7 @@ public class ForgetPassword extends AppCompatActivity {
     private Button forgetBTN;
     private boolean isSend;
     private final String USER_AGENT = "Mozilla/5.0";
-    private final static String Url = "https://www.crowdsafes.com/forgotPassword";
+    private final static String Url = "https://www.crowdsafes.com/forgetpassword";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +58,12 @@ public class ForgetPassword extends AppCompatActivity {
                     }
                     if (!isSend) {
                         forgetBTN.setClickable(true);
-                        Toast.makeText(getApplication(), "Reset failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplication(), "request failed", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getApplication(), "Reset success", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(ForgetPassword.this,LoginPage.class));
+                        Toast.makeText(getApplication(),"Please check your email for password reset instructions",
+                                Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(ForgetPassword.this, LoginPage.class));
+                        finish();
                     }
                 }
             }

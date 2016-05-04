@@ -16,10 +16,9 @@ import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DataAdapter extends ArrayAdapter implements Filterable {
-    List adapterList = new ArrayList();
+    ArrayList<Object> adapterList = new ArrayList<>();
     public DataAdapter(Context context, int resource) {
         super(context, resource);
     }
@@ -39,7 +38,7 @@ public class DataAdapter extends ArrayAdapter implements Filterable {
         TextView videoURL;
         ImageView videoIcon;
     }
-
+    @SuppressWarnings("unchecked")
     @Override
     public void add(Object object) {
         super.add(object);

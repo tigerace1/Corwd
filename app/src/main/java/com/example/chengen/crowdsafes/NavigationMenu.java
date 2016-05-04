@@ -43,7 +43,7 @@ public class NavigationMenu extends AppCompatActivity {
         }
         SharedPreferences sharedPref =getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         if (sharedPref.contains("username"))
-            getSupportActionBar().setTitle("Hello: "+sharedPref.getString("username",""));
+            getSupportActionBar().setTitle("Hello: "+sharedPref.getString("firstName",""));
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

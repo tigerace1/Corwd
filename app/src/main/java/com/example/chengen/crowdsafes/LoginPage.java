@@ -52,7 +52,7 @@ public class LoginPage extends AppCompatActivity implements View.OnClickListener
         login.setOnClickListener(this);
         forget.setOnClickListener(this);
         signUp.setOnClickListener(this);
-        user.setHint("UserName/e-mail");
+        user.setHint("e-mail");
         password.setHint("Password");
         user.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.c));
         password.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.c));

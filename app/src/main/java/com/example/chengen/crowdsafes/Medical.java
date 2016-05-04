@@ -10,7 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -28,6 +30,16 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -41,22 +53,24 @@ import java.net.URLConnection;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
-
 public class Medical extends Fragment implements View.OnClickListener {
     private EditText reportDescription,locationDes, videoURL;
     private ImageView Image1, Image2, Image3;
     private static String target, reportType;
     private static Bitmap pictureOne, pictureTwo, pictureThree;
-    private String photoByte1, photoByte2, photoByte3;
+    private String name1,name2,name3;
     private ToggleButton my,other;
     private Button send;
     private boolean isSend;
     private final String USER_AGENT = "Mozilla/5.0";
     private final static String Url = "https://www.crowdsafes.com/reportMedical";
+    private static final String SERVER_ADDRESS="http://crowdsafe.azurewebsites.net/";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,35 +92,33 @@ public class Medical extends Fragment implements View.OnClickListener {
         Image1.setOnClickListener(this);
         Image2.setOnClickListener(this);
         Image3.setOnClickListener(this);
-        my.setOnClickListener(this);
-        other.setOnClickListener(this);
         setHints();
         getData();
         return v;
     }
     private void getData(){
-        SharedPreferences sharedPref =getActivity().getSharedPreferences("aggression", Context.MODE_PRIVATE);
-        if (sharedPref.contains("reortdes")) {
+        SharedPreferences sharedPref =getActivity().getSharedPreferences("missing", Context.MODE_PRIVATE);
+        if (sharedPref.contains("reportypes")) {
             reportDescription.setText(sharedPref.getString("reportdes", ""));
             locationDes.setText(sharedPref.getString("locationdes", ""));
             videoURL.setText(sharedPref.getString("videoURL", ""));
             target = sharedPref.getString("target", "");
-            reportType = sharedPref.getString("reporttype", "");
         }
-        if(reportType.equals("Myself"))
-            my();
-        else if(reportType.equals("Ohters"))
-            other();
-        if(sharedPref.contains("imageone"))
-            Image1.setImageDrawable(new BitmapDrawable(getResources(), stringToBitMap(sharedPref.getString("imageone", ""))));
-        if(sharedPref.contains("imagetwo"))
-            Image2.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(sharedPref.getString("imagetwo",""))));
-        if(sharedPref.contains("imageothree"))
-            Image3.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(sharedPref.getString("imagethree",""))));
+        if(sharedPref.contains("imageone")) {
+            String photoByte1 = sharedPref.getString("imageone", "");
+            Image1.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(photoByte1)));
+        }
+        if(sharedPref.contains("imagetwo")) {
+            String photoByte2 = sharedPref.getString("imagetwo", "");
+            Image2.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(photoByte2)));
+        }
+        if (sharedPref.contains("imageothree")) {
+            String photoByte3 = sharedPref.getString("imagethree", "");
+            Image3.setImageDrawable(new BitmapDrawable(getResources(),stringToBitMap(photoByte3)));
+        }
     }
     private void setHints (){
         target="";
-        reportType="";
         reportDescription.setHint("Describe the situation");
         locationDes.setHint("Describe your location");
         videoURL.setHint("Attach your video's url here");
@@ -114,16 +126,6 @@ public class Medical extends Fragment implements View.OnClickListener {
         locationDes.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
         videoURL.setHintTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.c));
         reportDescription.setScrollbarFadingEnabled(true);
-    }
-    private void my(){
-        other.setChecked(false);
-        my.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOn));
-        other.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOff));
-    }
-    private void other(){
-        my.setChecked(false);
-        other.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOn));
-        my.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOff));
     }
     @Override
     public void onClick(View v) {
@@ -135,9 +137,10 @@ public class Medical extends Fragment implements View.OnClickListener {
             case R.id.tbOther:
                 other();
                 reportType="Others";
-                break;
             case R.id.btnMed:
-                OnSendButtonPress();
+                send.setClickable(false);
+                new UploadInfo(pictureOne,pictureTwo,pictureThree,reportDescription.getText().toString(),
+                        videoURL.getText().toString(), locationDes.getText().toString()).execute();
                 break;
             case R.id.ivMedPic1:
                 PopupMenu popup1 = new PopupMenu(getActivity(), Image1);
@@ -273,70 +276,12 @@ public class Medical extends Fragment implements View.OnClickListener {
                 break;
             case R.id.ibMedMap:
                 Intent map = new Intent(getContext(), MapsActivity.class);
-                map.putExtra("type",2);
+                map.putExtra("type",0);
                 startActivity(map);
                 break;
         }
     }
-    private void OnSendButtonPress(){
-        send.setClickable(false);
-        if (Image1.getDrawable() != null && Image1.getDrawable().getMinimumWidth() != 0) {
-            photoByte1 = bitMapToString(pictureOne);
-            pictureOne.recycle();
-        }
-        if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
-            photoByte2 = bitMapToString(pictureTwo);
-            pictureTwo.recycle();
-        }
-        if (Image2.getDrawable() != null && Image2.getDrawable().getMinimumWidth() != 0) {
-            photoByte3 = bitMapToString(pictureThree);
-            pictureThree.recycle();
-        }
-        SharedPreferences sharedPref =getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
-        if (sharedPref.contains("medicalLoc"))
-            target = sharedPref.getString("medicalLoc","");
-        SharedPreferences preferences = getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                try {
-                    upLoadToDB(reportDescription.getText().toString(),
-                            photoByte1, photoByte2, photoByte3,
-                            videoURL.getText().toString(), target, locationDes.getText().toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (!isSend) {
-            send.setClickable(true);
-            Toast.makeText(getActivity(), "Upload failed", Toast.LENGTH_LONG).show();
-        }else {
-            reportType = "";
-            reportDescription.setText("");
-            locationDes.setText("");
-            videoURL.setText("");
-            Image1.setBackground(null);
-            Image2.setBackground(null);
-            Image3.setBackground(null);
-            if(pictureOne!=null)
-                pictureOne.recycle();
-            if(pictureTwo!=null)
-                pictureTwo.recycle();
-            if(pictureThree!=null)
-                pictureThree.recycle();
-        }
-    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -394,10 +339,9 @@ public class Medical extends Fragment implements View.OnClickListener {
             }
         }
     }
-    private void upLoadToDB(String reportDescription,
+    private void upLoadToDB(String reportType,String reportDescription,
                             String photo1,String photo2, String photo3, String video,
                             String location, String locDes) {
-
         String string = "&txtField2=" + reportDescription +
                 "&fileUpload=" + photo1 + "&photo2=" + photo2 +
                 "&photo3=" + photo3+"&location="+location+"&reward=";
@@ -427,7 +371,6 @@ public class Medical extends Fragment implements View.OnClickListener {
             isSend = false;
         }
     }
-
     private void sendGet() {
         try {
             URL obj = new URL(Url);
@@ -443,6 +386,7 @@ public class Medical extends Fragment implements View.OnClickListener {
             in.close();
         } catch (Exception e) {
             e.printStackTrace();
+            exceptionInfo();
             isSend = false;
         }
     }
@@ -466,14 +410,88 @@ public class Medical extends Fragment implements View.OnClickListener {
                 response.append(inputLine);
             }
             in.close();
-            if (response.toString() != null) {
-                Intent succeed = new Intent(getActivity(), Thankyou.class);
-                startActivity(succeed);
+            if (response.toString().equals("failed")) {
+                isSend=true;
+            }else{
+                isSend = false;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            exceptionInfo();
             isSend = false;
         }
+    }
+    private void my(){
+        other.setChecked(false);
+        my.setChecked(true);
+        my.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOn));
+        other.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOff));
+    }
+    private void other(){
+        my.setChecked(false);
+        other.setChecked(true);
+        other.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOn));
+        my.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.checkboxOff));
+    }
+    private void exceptionInfo(){
+        send.setClickable(true);
+        Looper.prepare();
+        Toast.makeText(getActivity(), "Upload failed", Toast.LENGTH_LONG).show();
+    }
+    private synchronized void uploadImage(Bitmap image, String name) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+        ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+        dataToSend.add(new BasicNameValuePair("image", encodedImage));
+        dataToSend.add(new BasicNameValuePair("name", name));
+        HttpParams httpParams = getHttpRequestParams();
+        HttpClient client = new DefaultHttpClient(httpParams);
+        HttpPost post = new HttpPost(SERVER_ADDRESS + "SavePicture.php");
+        try {
+            post.setEntity(new UrlEncodedFormEntity(dataToSend));
+            client.execute(post);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private HttpParams getHttpRequestParams(){
+        HttpParams httpRequestParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpRequestParams, 1000 * 30);
+        HttpConnectionParams.setSoTimeout(httpRequestParams, 1000 * 30);
+        return httpRequestParams;
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        Thread t = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("missing", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("reportdes", reportDescription.getText().toString());
+                editor.putString("locationdes", locationDes.getText().toString());
+                editor.putString("videoURL", videoURL.getText().toString());
+                editor.putString("target", target + "");
+                if(pictureOne!=null)
+                    editor.putString("imageone",bitMapToString(pictureOne));
+                if(pictureTwo!=null)
+                    editor.putString("imageone",bitMapToString(pictureTwo));
+                if(pictureThree!=null)
+                    editor.putString("imageone",bitMapToString(pictureThree));
+                editor.apply();
+            }
+        };
+        t.start();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SharedPreferences preferences = getActivity().getSharedPreferences("missing", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
     }
     private String bitMapToString(Bitmap bitmap){
         System.gc();
@@ -491,39 +509,96 @@ public class Medical extends Fragment implements View.OnClickListener {
             return null;
         }
     }
-    @Override
-    public void onPause() {
-        super.onPause();
-        Thread t= new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                SharedPreferences sharedPref = getActivity().getSharedPreferences("medical", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("reportdes", reportDescription.getText().toString());
-                editor.putString("locationdes", locationDes.getText().toString());
-                editor.putString("videoURL", videoURL.getText().toString());
-                editor.putString("target",target+"");
-                editor.putString("reporttype",reportType+"");
-                if(pictureOne!=null)
-                    editor.putString("imageone",bitMapToString(pictureOne));
-                if(pictureTwo!=null)
-                    editor.putString("imagetwo",bitMapToString(pictureTwo));
-                if(pictureThree!=null)
-                    editor.putString("imagethree",bitMapToString(pictureThree));
-                editor.apply();
+    private class UploadInfo extends AsyncTask<Void,Void,Void> {
+        private Bitmap one,two,three;
+        private String des,url,locDes;
+        public UploadInfo(Bitmap one,Bitmap two,Bitmap three,String des,String url,String locDes){
+            this.one = one;
+            this.two = two;
+            this.three = three;
+            this.des = des;
+            this.url = url;
+            this.locDes = locDes;
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            Thread t1 = null,t2 = null,t3 = null;
+            if (one != null ) {
+                name1 = Calendar.getInstance().get(Calendar.MILLISECOND)+
+                        ""+Calendar.getInstance().get(Calendar.DATE)+""+Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH);
+                t1 = new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        uploadImage(one, "abcd");
+                    }
+                };
+                t1.start();
             }
-        };
-        t.start();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        SharedPreferences preferences = getActivity().getSharedPreferences("medical", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.commit();
+            if (two!=null) {
+                name2 = Calendar.getInstance().get(Calendar.MILLISECOND)+
+                        ""+Calendar.getInstance().get(Calendar.DATE)+""+Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH);
+                t2 = new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        uploadImage(two, "dcba");
+                    }
+                };
+                t2.start();
+            }
+            if (three!=null) {
+                name3 = Calendar.getInstance().get(Calendar.MILLISECOND)+
+                        ""+Calendar.getInstance().get(Calendar.DATE)+""+Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH);
+                t3 = new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        uploadImage(three, "oooo");
+                    }
+                };
+                t3.start();
+            }
+            SharedPreferences sharedPref =getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
+            if (sharedPref.contains("mssingLoc"))
+                target = sharedPref.getString("missingLoc", "");
+            SharedPreferences preferences = getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            upLoadToDB(reportType,des,name1,name2,name3,url,target,locDes);
+            try {
+                if(t1!=null)
+                    t1.join();
+                if(t2!=null)
+                    t2.join();
+                if(t3!=null)
+                    t3.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (!isSend) {
+                send.setClickable(true);
+                Toast.makeText(getActivity(), "Upload failed", Toast.LENGTH_LONG).show();
+            }else {
+                if(pictureOne!=null)
+                    pictureOne.recycle();
+                if(pictureTwo!=null)
+                    pictureTwo.recycle();
+                if(pictureThree!=null)
+                    pictureThree.recycle();
+                pictureOne=null;
+                pictureTwo=null;
+                pictureThree=null;
+                startActivity(new Intent(getActivity(),Thankyou.class));
+                getActivity().finish();
+            }
+        }
     }
 }
 

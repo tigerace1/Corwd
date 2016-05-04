@@ -24,6 +24,8 @@ import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -34,6 +36,7 @@ public class SignUpPage extends AppCompatActivity implements View.OnClickListene
     private final String USER_AGENT = "Mozilla/5.0";
     private final static String Url = "https://www.crowdsafes.com/signup";
     private boolean isSend;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,26 +71,54 @@ public class SignUpPage extends AppCompatActivity implements View.OnClickListene
             signup.setClickable(false);
             String pass = password.getText().toString();
             String repass = repassword.getText().toString();
+            boolean isEmail = true;
+            boolean hasEmail = true;
+            boolean hasFirstName = true;
+            boolean hasLastName = true;
+            boolean hasPassword = true;
+            boolean matchPasswords = true;
             if (firstName.getText().toString().equals("")) {
+                firstName.setText("");
                 firstName.setHint("Enter your first name");
                 firstName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.checkboxOn));
                 signup.setClickable(true);
-            } else if (lastName.getText().toString().equals("")) {
+                hasFirstName = false;
+            }
+            if (lastName.getText().toString().equals("")) {
+                lastName.setText("");
                 lastName.setHint("Enter your last name");
                 lastName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.checkboxOn));
                 signup.setClickable(true);
-            } else if (email.getText().toString().equals("")) {
+                hasLastName = false;
+            }
+            if (email.getText().toString().equals("")) {
+                email.setText("");
                 email.setHint("Enter your email");
                 email.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.checkboxOn));
                 signup.setClickable(true);
-            } else if(pass.equals("")||repass.equals("")){
-                Toast.makeText(getApplication(), "Both passwords cannot be empty!", Toast.LENGTH_LONG).show();
-            }else if (!pass.equals(repass)) {
-                Toast.makeText(getApplication(), "The passwords is not match!", Toast.LENGTH_LONG).show();
-                password.selectAll();
-                repassword.selectAll();
+                hasEmail = false;
+            }else if(!isValidEmailAddress(email.getText().toString())){
+                email.setText("");
+                email.setHint("Please enter a valid email");
+                email.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.checkboxOn));
                 signup.setClickable(true);
-            } else {
+                isEmail = false;
+            }
+            if(pass.equals("")||repass.equals("")){
+                password.setText("");
+                password.setHint("Enter your password");
+                password.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.checkboxOn));
+                signup.setClickable(true);
+                hasPassword = false;
+            }else
+            if (!pass.equals(repass)) {
+                repassword.setText("");
+                repassword.setHint("Two passwords must be matched");
+                repassword.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.checkboxOn));
+                signup.setClickable(true);
+                matchPasswords = false;
+            }
+            if(hasEmail && hasLastName && hasFirstName && hasPassword && isEmail && matchPasswords) {
                 Thread t = new Thread() {
                     @Override
                     public void run() {
@@ -190,6 +221,16 @@ public class SignUpPage extends AppCompatActivity implements View.OnClickListene
             e.printStackTrace();
             isSend=false;
         }
+    }
+    public boolean isValidEmailAddress(String email) {
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
