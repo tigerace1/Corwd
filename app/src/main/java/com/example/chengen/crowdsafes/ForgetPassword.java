@@ -62,7 +62,7 @@ public class ForgetPassword extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplication(),"Please check your email for password reset instructions",
                                 Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(ForgetPassword.this, LoginPage.class));
+                        startActivity(new Intent(ForgetPassword.this, account.LoginPage.class));
                         finish();
                     }
                 }
